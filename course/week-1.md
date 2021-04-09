@@ -13,8 +13,8 @@ Check out the prototype @ https://xd.adobe.com/view/19b3c8d4-05bd-4ac2-ad30-a6d7
 
 ## Learning goals
 
-* _Adding realtime functionalities to a project
-* _Combining multiple playlists with the Spotify API
+*_Adding realtime functionalities to a project
+*_Combining multiple playlists with the Spotify API
 
 ## Installation guide
 
