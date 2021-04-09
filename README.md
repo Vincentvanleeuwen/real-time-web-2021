@@ -1,6 +1,7 @@
 # **Combinify**
 ### Progressive Web Apps @cmda-minor-web 2020 - 2021
 
+## CONCEPT
 
 https://combinify-node.herokuapp.com
 
@@ -10,9 +11,13 @@ In this project you will simply be able to create a playlist from yourself. I'm 
 
 Check out the prototype @ https://xd.adobe.com/view/19b3c8d4-05bd-4ac2-ad30-a6d7686fc173-4ce0/?fullscreen&hints=off
 
+This project is made for fun, so do with it as you wish :)
+
 ## Learning goals
 
-* _Being able to change a clientside application into a serverside application_
+* _Being able to implement socket io into an existing project
+
+* _Understanding rooms in socket io
 
 ## Installation guide
 
@@ -40,7 +45,6 @@ REDIRECTURL=http://localhost:3000/callback
 To run the project locally you will need nodejs.
 ```jsx
 
- 
  // Go to the correct folder
  cd C:/{DesiredMap}/progressive-web-apps-2021
  
@@ -92,19 +96,6 @@ const options = {
 
 Check out the [Reference](https://developer.spotify.com/documentation/web-api/reference/) page for further explanation on what links to get what data from.
 
-## Critical Render Path
-
-To make sure my application is running smoothly I'm using lighthouse to check my application for speed/accessibility problems.
-
-![Lighthouse-before](https://github.com/Vincentvanleeuwen/progressive-web-apps-2021/blob/master/images/lighthouse-before.png?raw=true)
-
-First off there's an error where my style and scripts are blocking the rendering path. To fix this I will be changing the way I load in fonts from CDN to locally imported. I'll also preload my css and javascript. Hopefully this will boost op the speed site.
- 
-We can also see that the accessibility isn't at the level we'd want it to be.
-When adding the meta tag viewport you have to allow the user to be able to zoom in. If you don't allow this it'll damage the accessibility of the website.
-
-![Lighthouse-after](https://github.com/Vincentvanleeuwen/progressive-web-apps-2021/blob/master/images/lighthouse-after.png?raw=true)
-
 ## Checklist
 - [x] Connect to the spotify API
 - [x] Get the top tracks of the logged in user
@@ -113,8 +104,9 @@ When adding the meta tag viewport you have to allow the user to be able to zoom 
 - [x] Set playlist name
 - [x] Set max amount of songs
 - [x] Visit other peoples lists
-- [ ] Add more profiles
 - [x] Add songs to a playlist
+- [ ] Add more profiles
+- [ ] View other peoples top tracks
 - [ ] Delete songs from a playlist
 <!-- How about a license here? 📜 (or is it a licence?) 🤷 -->
 ## Sources
