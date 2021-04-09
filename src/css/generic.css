@@ -1,0 +1,66 @@
+/* General */
+@font-face {
+  font-family: Comfortaa;
+  font-weight: 300;
+  src: url('../fonts/Comfortaa-Light.ttf');
+}
+@font-face {
+  font-family: Raleway;
+  font-weight: 300;
+  font-style: italic;
+  src: url('../fonts/Raleway-LightItalic.ttf');
+}
+@font-face {
+  font-family: Raleway;
+  font-weight: 700;
+  src: url('../fonts/Raleway-Bold.ttf');
+}
+
+
+body {
+  margin: 0;
+  padding: 0 1em 5em 1em;
+  background-color: var(--dark-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+h1, h2, h3 {
+  color: var(--light-color);
+}
+/* Background */
+svg.svg-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.app-title {
+  font-size: clamp(2rem, 6vw, 3rem);
+  width: max-content;
+  text-align: center;
+  color: var(--light-color);
+  font-family: Comfortaa, sans-serif;
+
+}
+
+.btn {
+  background-color: var(--spotify-color);
+  padding: .5em 1em;
+  text-decoration: none;
+  border-radius: 50px;
+  box-shadow: none;
+  border: 0;
+  color: var(--light-color);
+  cursor: pointer;
+  font-family: Raleway, sans-serif;
+  font-size: clamp(.8rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+}

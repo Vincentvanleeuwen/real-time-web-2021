@@ -1,0 +1,32 @@
+{{>profile
+  name = name
+  img = img
+}}
+<form id="playlist-form" action="/create" method="post">
+  <label for="playlist-name">
+    Name Playlist
+    <input id="playlist-name" type="text" placeholder="E.g. 'Summer vibes!'" name="playlist" required>
+  </label>
+  <label for="duration">
+    How many songs per person?
+    <input id="duration" name="duration" type="text" placeholder="40" required>
+  </label>
+  <fieldset>
+    <legend> Pick my songs from..</legend>
+    <input type="radio" name="term" id="short" value="short">
+    <label for="short">
+      Past 4 Weeks
+
+    </label>
+    <input type="radio" name="term" id="medium" value="medium" checked >
+    <label for="medium">
+      Past 6 Months
+
+    </label>
+    <input type="radio" name="term" id="long" value="Long">
+    <label for="long">
+      All Time
+    </label>
+  </fieldset>
+  <input type="submit" value="Create a new playlist" class="btn">
+</form>

@@ -1,0 +1,27 @@
+.home-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.home-options label {
+  color: var(--light-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-options .btn {
+  width: max-content;
+  margin-bottom: 10%;
+}
+.home-options input {
+  border-radius: 5px;
+  border: none;
+  padding: 0.4em 0.5em;
+  margin-top: 2%;
+}
+.home-options input:focus {
+  outline: var(--cta-color) solid 2px;
+}

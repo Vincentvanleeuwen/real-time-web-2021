@@ -1,0 +1,31 @@
+{
+  "short_name": "Combinify",
+  "name": "Combinify: Combine your playlist with your friends'",
+  "icons": [
+    {
+      "src": "/img/c192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/c512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#342F2F",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#342F2F",
+  "shortcuts": [
+    {
+      "name": "Create a playlist",
+      "short_name": "Create",
+      "description": "Directly create a new playlist",
+      "url": "/create",
+      "icons": [{ "src": "/img/c192x192.png", "sizes": "192x192" }]
+    }
+  ],
+  "description": "Create a playlist for you and your friends"
+}

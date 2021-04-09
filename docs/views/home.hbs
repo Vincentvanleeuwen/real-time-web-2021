@@ -1,0 +1,21 @@
+<section class="container">
+  {{>profile
+    name = name
+    img = img
+  }}
+  <section class="home-options">
+
+    <a href="/create" class="btn">Create a playlist</a>
+
+    <form action="/home" method="post">
+      <label for="searchPlaylist">
+        Search for a playlist
+        <input type="text" name="searchPlaylist">
+      </label>
+      <input type="submit" value="Search">
+    </form>
+
+  </section>
+
+
+</section>

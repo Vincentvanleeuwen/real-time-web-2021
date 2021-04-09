@@ -1,0 +1,18 @@
+nav {
+  width: 100vw;
+  height: max-content;
+}
+.app-title {
+  margin-top: 20%;
+}
+
+.btn {
+  background-color: var(--spotify-color);
+  color: var(--light-color);
+  margin-top: 10%;
+}
+
+#login {
+  display: flex;
+  justify-content: center;
+}

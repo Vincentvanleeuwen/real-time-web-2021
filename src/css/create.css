@@ -1,0 +1,103 @@
+#playlist-form {
+  margin-top: 1em;
+  height: max-content;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+#playlist-form label {
+  display: flex;
+  flex-direction: column;
+  max-height: max-content;
+  background-color: transparent;
+  color: var(--light-color);
+  margin-top: 2em;
+  line-height: 1.7em;
+  padding: 0 .5em;
+}
+
+#playlist-form input[type="text"]:focus {
+  outline: 0;
+  border-bottom: solid 1px var(--primary-color);;
+}
+#playlist-form input[type="text"] {
+  border: 0;
+  background-color: transparent;
+  border-bottom: solid var(--light-color) 1px;
+  color: var(--light-color);
+  padding: .5em;
+}
+#playlist-form input[type="text"]:last-child {
+  border: 0;
+  background-color: transparent;
+  border-bottom: solid var(--light-color) 1px;
+}
+#duration {
+  width: 20%;
+}
+#playlist-form fieldset {
+  display: flex;
+  flex-direction: column;
+  max-height: max-content;
+  background-color: transparent;
+  color: var(--light-color);
+  margin-top: 2em;
+  border: 0;
+  border-radius: 1em;
+  padding: .5em 1em;
+  overflow: hidden;
+}
+#playlist-form fieldset label {
+  cursor: pointer;
+  color: var(--light-color);
+  transition: .5s cubic-bezier(0.57, 0.54, 0, 0.7);
+  border-radius:5px;
+}
+#playlist-form fieldset input:checked:first-of-type + label {
+  margin-left: 0;
+  padding-left: 2em;
+}
+#playlist-form fieldset input:checked:last-of-type + label {
+  margin-right: 0;
+  padding-right: 2em;
+}
+#playlist-form fieldset input:checked + label {
+  background-color: var(--cta-color);
+  color: var(--light-color);
+  line-height: 0;
+  font-weight: bold;
+  margin: 0;
+  padding: 1em;
+  border-radius: 5px;
+}
+
+#playlist-form fieldset input {
+  display: none;
+}
+#playlist-form fieldset legend {
+  display: flex;
+}
+#playlist-btn {
+  background-color: var(--cta-color);
+  display: none;
+  margin-top: 2em;
+}
+
+.person {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.person img {
+  border-radius: 50%;
+  height: 10em;
+}
+.person .name {
+  color: white;
+  text-align: center;
+}
+
+label[for="access-token"] {
+  display: none;
+}
