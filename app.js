@@ -8,6 +8,7 @@
  */
 const firebase = require('firebase/app')
 require('firebase/database')
+const http = require('http')
 const compression = require('compression')
 const express = require('express') // Express web server framework
 const handlebars = require('express-handlebars')
@@ -15,12 +16,25 @@ const session = require('express-session')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 
+
+
 if(process.env.NODE_ENV !== 'production'){
   require('dotenv').config()
 }
 
 const port = process.env.PORT || 3000
 const app = express();
+const server = http.createServer(app)
+const { initSocketIO } = require('./docs/helpers/socket')
+
+const newSession = session({
+  secret: 'combinify-secret',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    secure: 'auto',
+  },
+})
 
 const firebaseConfig = {
   apiKey: "AIzaSyDnBaT31_LbWAjiRd7isQ1pPdiDVD1HmtQ",
@@ -32,6 +46,7 @@ const firebaseConfig = {
   appId: "1:274350746286:web:ee843bfbd1f420cb235b3f",
   measurementId: "G-1PDBZFE48J"
 };
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
@@ -58,12 +73,7 @@ app.use(express.static(__dirname + '/public'))
   .use(cookieParser())
   .use(express.json())
   .use(express.urlencoded({ extended: true }))
-  .use(session({
-    secret: 'combinify-secret',
-    resave: true,
-    saveUninitialized: true,
-    cookie: { secure: 'auto' }
-  }))
+  .use(newSession)
   .use('/', login)
   .use('/home', home)
   .use('/callback', callback)
@@ -72,5 +82,8 @@ app.use(express.static(__dirname + '/public'))
   .use('/offline', offline)
   .use('/*', error)
 
-console.log(`Listening on ${port}`)
-app.listen(port)
+initSocketIO(server, newSession)
+
+server.listen(port, () => {
+  console.log(`Listening on ${port}`)
+})

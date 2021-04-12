@@ -3,6 +3,7 @@ require('firebase/database')
 const router = require('express').Router()
 const request = require('request')
 const { deleteColumns, restructureSongs } = require('../helpers/transformData')
+const { makeUrlSafe } = require('../utils/makeUrlSafe')
 
 const globalRef = firebase.database().ref('playlists/')
 globalRef.on('value', function (snap) {
@@ -12,10 +13,9 @@ globalRef.on('value', function (snap) {
   }
   console.log(playlists)
   let playlistKeys = Object.keys(playlists)
-  playlistKeys.forEach((playlist, index) => {
-    console.log('index: ' + playlists[playlist].searchKey)
-    console.log('playlist',playlist)
-    router.get(`/${playlist}/${playlists[playlist].searchKey}`, (req, res) => {
+  playlistKeys.forEach((playlist) => {
+
+    router.get(`/${makeUrlSafe(playlist)}/${playlists[playlist].searchKey}`, (req, res) => {
       console.log(req.session.user)
       if(!req.session.user) {
         res.redirect('/')
@@ -38,35 +38,29 @@ globalRef.on('value', function (snap) {
         request.get(options, function(error, response, body) {
           let filtered = deleteColumns(body)
 
-          const songsRef = firebase.database().ref(`playlists/${playlist}/songs`)
+          const songsRef = firebase.database().ref(`playlists/${playlist}/songs/${req.session.user.id}`)
 
           songsRef.once('value', (snapshot) => {
-            console.log('snap=', snapshot.val());
             if(!snapshot.val()) {
-              playlistRef.update({
-                songs: restructureSongs(filtered)
-              }).then(() => console.log('Set songs')).catch(err => console.log(err));
+              songsRef.set(restructureSongs(filtered)).then(() => console.log('Set songs')).catch(err => console.log(err));
             }
-              // restructureSongs(filtered).forEach(song => {
-              //   songsRef.update(song).then(() => console.log('Updated songs')).catch(err => console.log(err));
-              // })
-
-
           }).then(() => console.log('Songs Completed')).catch(err => console.log(err));
 
           res.render('playlist', {
             layout: 'main',
+            userId: req.session.user.id,
             name: req.session.user.name,
             image: req.session.user.image,
             playlistTitle: playlist,
             playlistUrl: snap.val().url,
+            searchKey: snap.val().searchKey,
             songs: restructureSongs(filtered)
           });
         });
       })
     })
 
-    router.post(`/${playlist}`, (req, res) => {
+    router.post(`/${makeUrlSafe(playlist)}`, (req, res) => {
       if(!req.session.access_token) {
         res.redirect('/')
         return
@@ -79,8 +73,6 @@ globalRef.on('value', function (snap) {
         })
       })
 
-      console.log('post songs', uris)
-
       const options = {
         method: 'POST',
         url: `https://api.spotify.com/v1/playlists/${req.session.playlistId}/tracks?uris=${uris}`,
@@ -90,12 +82,11 @@ globalRef.on('value', function (snap) {
         },
         json: true
       }
-      console.log(options)
+
       // use the access token to access the Spotify Web API
       request.post(options, function(error, response, body) {
-
         if(!body.error) {
-          res.redirect(`/playlists/${req.session.playlistName}`)
+          res.redirect(`/playlists/${makeUrlSafe(req.session.playlistName)}`)
         }
       })
     })

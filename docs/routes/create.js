@@ -2,8 +2,9 @@ const firebase = require('firebase/app')
 require('firebase/database')
 const router = require('express').Router()
 const request = require('request')
-const querystring = require('querystring');
 const { randomString } = require('../utils/generateRandomString')
+const { makeUrlSafe } = require('../utils/makeUrlSafe')
+
 router.get('/', (req, res) => {
   if(!req.session.user) {
     res.redirect('/')
@@ -56,12 +57,12 @@ router.post('/', (req, res) => {
       searchKey: searchKey
     }).then(() => console.log('succesfully set')).catch(err => console.log(err));
     if(!body.error) {
-
       req.session.playlistUrl = body.external_urls.spotify
       req.session.playlistId = body.id
       req.session.playlistName = req.body.playlist
+      req.session.socketRoom = `${req.body.playlist}#${searchKey}`
       req.session.save()
-      res.redirect(`/playlists/${req.body.playlist}/${searchKey}`)
+      res.redirect(`/playlists/${makeUrlSafe(req.body.playlist)}/${searchKey}`)
     }
   })
 })

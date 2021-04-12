@@ -1,21 +1,24 @@
-<section class="container">
-  {{>profile
-    name = name
-    img = img
-  }}
-  <section class="home-options">
+<main>
+  <section class="container">
+    {{>profile
+      name = name
+      img = img
+    }}
+    <section class="home-options">
 
-    <a href="/create" class="btn">Create a playlist</a>
+      <a href="/create" class="btn">Create a playlist</a>
 
-    <form action="/home" method="post">
-      <label for="searchPlaylist">
-        Search for a playlist
-        <input type="text" name="searchPlaylist">
-      </label>
-      <input type="submit" value="Search">
-    </form>
+      <form action="/home" method="post">
+        <label for="searchPlaylist">
+          Search for a playlist
+          <input type="text" name="searchPlaylist" placeholder="e.g. playlist#aE2Gv2">
+        </label>
+        <input type="submit" value="Search">
+      </form>
+
+    </section>
+
 
   </section>
 
-
-</section>
+</main>

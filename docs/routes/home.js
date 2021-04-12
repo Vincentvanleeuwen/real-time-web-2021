@@ -3,6 +3,7 @@ require('firebase/database')
 const router = require('express').Router()
 const request = require('request')
 const { deleteColumns, restructureData } = require('../helpers/transformData')
+const { makeUrlSafe } = require('../utils/makeUrlSafe')
 
 router.get('/', (req, res) => {
 
@@ -23,7 +24,6 @@ router.get('/', (req, res) => {
     let filtered = deleteColumns(body);
     let restructured = restructureData(filtered)
 
-    console.log('restructured', restructured)
     req.session.user = {
       id: restructured[0].id,
       name: restructured[0].name,
@@ -41,17 +41,15 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
-  console.log(req.body.searchPlaylist)
-
   const afterHashtag = /#([\w\d]+)/.exec(req.body.searchPlaylist)[1]
   const beforeHashtag = /([\w\d]+)#/.exec(req.body.searchPlaylist)[1]
-  console.log(beforeHashtag, afterHashtag)
-
   const playlistRef = firebase.database().ref('playlists/').child(`${beforeHashtag}`)
+
   playlistRef.on('value', (snap) => {
-    console.log(snap.val())
     if(snap.val()) {
-      res.redirect(`/playlists/${beforeHashtag}/${afterHashtag}`)
+      req.session.socketRoom = req.body.searchPlaylist
+      req.session.save();
+      res.redirect(`/playlists/${makeUrlSafe(beforeHashtag)}/${afterHashtag}`)
     } else {
       res.redirect(`/home`)
     }

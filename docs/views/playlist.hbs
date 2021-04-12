@@ -1,39 +1,41 @@
-{{>profile
-  name = name
-  img = image
-}}
-
-<section class="playlist-options">
-  <h2 class="playlistname">{{ playlistTitle }}</h2>
-  <div class="share-buttons show-screen-flex">
-    <button id="copy-button" class="btn">Copy URL</button>
-    <label for="copy-text">
-      <textarea id="copy-text">{{ playlistUrl }}</textarea>
-    </label>
-
-
-    <form action="/playlists/{{ playlistTitle }}" method="post">
-      <button id="save-button" class="btn">Add your addition</button>
-    </form>
-
-  </div>
-</section>
-
-<section class="song-lists">
-  <h2> Your Addition</h2>
-  <section class="songs">
-    {{#each songs}}
-    <div>
-      <div>
-        <p class="songArtist">{{songArtist}}</p>
-        <p class="songName">{{songName}}</p>
-      </div>
-      <svg xmlns="http://www.w3.org/2000/svg" height="86" viewBox="0 0 24 24" width="86">
-        <path d="M0 0h24v24H0z" fill="none"/>
-        <path d="M0 0h24v24H0V0z" fill="none"/>
-        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
-      </svg>
-    </div>
-    {{/each}}
+<main>
+  <section class="people">
   </section>
-</section>
+
+
+  <section class="playlist-options">
+    <h2 class="playlist-name">{{ playlistTitle }}#{{searchKey}}</h2>
+    <div class="share-buttons show-screen-flex">
+      <button id="copy-button" class="btn">Copy URL</button>
+      <label for="copy-text">
+        <textarea id="copy-text">{{ playlistUrl }}</textarea>
+      </label>
+
+
+      <form action="/playlists/{{ playlistTitle }}" method="post">
+        <button id="save-button" class="btn">Add your addition</button>
+      </form>
+
+    </div>
+  </section>
+
+  <section class="song-lists">
+    <h2> Your Addition</h2>
+    <section class="songs {{userId}}">
+      {{#each songs}}
+        <div>
+          <div>
+            <p class="songArtist">{{songArtist}}</p>
+            <p class="songName">{{songName}}</p>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" height="86" viewBox="0 0 24 24" width="86" class="delete">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M0 0h24v24H0V0z" fill="none"/>
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
+          </svg>
+        </div>
+      {{/each}}
+    </section>
+  </section>
+</main>
+
