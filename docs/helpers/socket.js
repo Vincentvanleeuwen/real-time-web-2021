@@ -11,17 +11,17 @@ const initSocketIO = (server, newSession) => {
     if(!socket.handshake.session.user || !socket.handshake.session.socketRoom) return
 
     let users = combineUser(socket.id, socket.handshake.session.user)
-    socket.handshake.session.users = users;
+    socket.handshake.session.users = users
     socket.handshake.session.save()
 
     socket.join(socket.handshake.session.socketRoom)
-
-    io.to(socket.handshake.session.socketRoom).emit('add users', users);
+    console.log('socketid' ,socket.id)
+    io.to(socket.handshake.session.socketRoom).emit('add users', users, socket.id)
 
     socket.on('disconnect', () => {
       let newUsers = socket.handshake.session.users.filter(user => user.socketId !== socket.id)
 
-      io.to(socket.handshake.session.socketRoom).emit('remove user', newUsers);
+      io.to(socket.handshake.session.socketRoom).emit('remove user', newUsers, socket.id)
 
 
     })

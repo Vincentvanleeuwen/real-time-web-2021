@@ -64,3 +64,18 @@ nav {
   font-size: clamp(.8rem, 2.5vw, 1.5rem);
   font-weight: 700;
 }
+
+.person {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.person img {
+  border-radius: 50%;
+  height: 10em;
+}
+.person .name {
+  color: white;
+  text-align: center;
+}

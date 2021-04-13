@@ -51,6 +51,7 @@ router.post('/', (req, res) => {
   // use the access token to access the Spotify Web API
   request.post(options, function(error, response, body) {
     playlistRef.set({
+      id: body.id,
       duration: req.body.duration,
       term: req.body.term,
       url: body.external_urls.spotify,

@@ -1,4 +1,4 @@
-<main>
+<main class="playlist-main">
   <section class="people">
   </section>
 
@@ -12,7 +12,7 @@
       </label>
 
 
-      <form action="/playlists/{{ playlistTitle }}" method="post">
+      <form action="/playlists/{{ playlistTitleUrlSafe }}/{{searchKey}}" method="post">
         <button id="save-button" class="btn">Add your addition</button>
       </form>
 

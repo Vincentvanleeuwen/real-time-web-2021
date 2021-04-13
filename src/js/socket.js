@@ -3,29 +3,34 @@ const peopleEl = document.querySelector('.people')
 socket.on('connect', () => {
   console.log('connected')
 })
-socket.on('add users', (users) => {
+socket.on('add users', (users, currentUser) => {
   console.log('userInAddUser', users)
-  addUsers(users)
+  updateUsers(users, currentUser)
 })
-socket.on('remove user', (users) => {
+socket.on('remove user', (users, currentUser) => {
   console.log('userInremoveUsers', users)
-  removeUser(users)
+  removeUser(users, currentUser)
 })
 
-const removeUser = (users) => {
-  addUsers(users)
+const removeUser = (users, currentUser) => {
+  updateUsers(users, currentUser)
 }
-const addUsers = (users) => {
+const updateUsers = (users, currentUser) => {
   peopleEl.innerHTML = ''
-  users.forEach(user => {
-    let personEl = document.createElement('section')
+  console.log(users, currentUser)
+  const sortedUsers = users.sort((user, index) => {
+    return user.socketId === currentUser ? -1 : index === currentUser ? 1 : 0;
+  })
+  console.log(sortedUsers)
+  sortedUsers.forEach(user => {
+    const personEl = document.createElement('section')
     personEl.classList.add('person')
 
-    let imgEl = document.createElement('img')
+    const imgEl = document.createElement('img')
     imgEl.src = user.image
 
-    let nameEl = document.createElement('h2')
-    let nameText = document.createTextNode(user.name)
+    const nameEl = document.createElement('h2')
+    const nameText = document.createTextNode(user.name)
     nameEl.classList.add('name')
     nameEl.appendChild(nameText)
 

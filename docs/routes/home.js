@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
       name: restructured[0].name,
       image: restructured[0].img
     }
-    req.session.save();
+    req.session.save()
 
     res.render('home', {
       layout: 'main',
@@ -43,12 +43,14 @@ router.post('/', (req, res) => {
 
   const afterHashtag = /#([\w\d]+)/.exec(req.body.searchPlaylist)[1]
   const beforeHashtag = /([\w\d]+)#/.exec(req.body.searchPlaylist)[1]
+  console.log('hello', beforeHashtag, afterHashtag)
   const playlistRef = firebase.database().ref('playlists/').child(`${beforeHashtag}`)
 
   playlistRef.on('value', (snap) => {
     if(snap.val()) {
       req.session.socketRoom = req.body.searchPlaylist
-      req.session.save();
+      req.session.playlistId = snap.val().id
+      req.session.save()
       res.redirect(`/playlists/${makeUrlSafe(beforeHashtag)}/${afterHashtag}`)
     } else {
       res.redirect(`/home`)

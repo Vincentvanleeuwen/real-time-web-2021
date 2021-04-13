@@ -1,3 +1,4 @@
+
 .share-buttons {
   transform: scale(0.8);
   display: flex;
@@ -16,7 +17,7 @@
 }
 .playlist-options {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   color: var(--light-color);
 }
@@ -70,7 +71,7 @@ label[for="copy-text"], #copy-text {
   cursor: pointer;
 }
 .song-lists {
-
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -82,3 +83,25 @@ label[for="copy-text"], #copy-text {
   border-bottom: 3px solid var(--light-color);
   width: max-content;
 }
+.people {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: .5fr 1fr;
+
+}
+.people .person:first-of-type {
+  grid-column-start: 2;
+  grid-row-start: 2;
+}
+.people .person:nth-child(2) {
+  grid-column-start: 1;
+  grid-row-start: 2;
+  transform: scale(.6);
+}
+.people .person:nth-child(3) {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  transform: scale(.6);
+}
+
+
