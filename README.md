@@ -96,6 +96,10 @@ const options = {
 
 Check out the [Reference](https://developer.spotify.com/documentation/web-api/reference/) page for further explanation on what links to get what data from.
 
+## Data life cycle
+
+![Data Life Cycle](https://github.com/Vincentvanleeuwen/real-time-web-2021/blob/main/images/Web%201920%20%E2%80%93%202.jpg)
+
 ## Checklist
 - [x] Connect to the spotify API
 - [x] Get the top tracks of the logged in user
@@ -105,7 +109,7 @@ Check out the [Reference](https://developer.spotify.com/documentation/web-api/re
 - [x] Set max amount of songs
 - [x] Visit other peoples lists
 - [x] Add songs to a playlist
-- [ ] Add more profiles
+- [x] Add more profiles
 - [ ] View other peoples top tracks
 - [ ] Delete songs from a playlist
 <!-- How about a license here? 📜 (or is it a licence?) 🤷 -->
