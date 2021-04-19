@@ -13,11 +13,31 @@ Check out the prototype @ https://xd.adobe.com/view/19b3c8d4-05bd-4ac2-ad30-a6d7
 
 This project is made for fun, so do with it as you wish :)
 
+## Concepts
+
+I've created three prototypes. If I had to choose for a design I would go with concept number two. 
+I had to make time for other problems in the application so I've decided to go with the third concept since it takes me a little less time. If I have time over I will create the second concept.
+The first concept wasn't really that scalable, the vertical aspect fits better in this type of application.
+
+### Concept One
+
+https://xd.adobe.com/view/3616615a-146f-44ae-9884-1a89ac6676f8-6345/?fullscreen
+
+### Concept Two
+
+https://xd.adobe.com/view/64aed2de-98cb-4403-94e9-bf3c66a4b170-31fd/
+
+### Concept Three
+
+https://xd.adobe.com/view/e057ad6b-1979-4372-a4e3-c0122ec36462-b504/
+
 ## Learning goals
 
 * _Being able to implement socket io into an existing project
 
 * _Understanding rooms in socket io
+
+* _Using Firebase together with socket io to create animations in real-time
 
 ## Installation guide
 
@@ -107,11 +127,11 @@ Check out the [Reference](https://developer.spotify.com/documentation/web-api/re
 - [x] Add songs to the playlist
 - [x] Set playlist name
 - [x] Set max amount of songs
-- [x] Visit other peoples lists
+- [ ] Visit other peoples lists
 - [x] Add songs to a playlist
 - [x] Add more profiles
 - [ ] View other peoples top tracks
-- [ ] Delete songs from a playlist
+- [x] Delete songs from a playlist
 <!-- How about a license here? 📜 (or is it a licence?) 🤷 -->
 ## Sources
 
