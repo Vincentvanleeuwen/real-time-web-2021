@@ -137,10 +137,4 @@ Check out the [Reference](https://developer.spotify.com/documentation/web-api/re
 
 [The one and only Jonah Gold](https://github.com/theonejonahgold)
 
-[Wouter](https://github.com/Mokerstier) 
-
-[Ben](https://github.com/benl95)
-
-[Roeland](https://github.com/roelandvs)
-
 [Generate a random string](https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript)
