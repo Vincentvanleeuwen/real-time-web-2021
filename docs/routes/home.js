@@ -46,16 +46,17 @@ router.post('/', (req, res) => {
   console.log('hello', beforeHashtag, afterHashtag)
   const playlistRef = firebase.database().ref('playlists/').child(`${beforeHashtag}`)
 
-  playlistRef.on('value', (snap) => {
+  playlistRef.once('value', (snap) => {
     if(snap.val()) {
-      req.session.socketRoom = req.body.searchPlaylist
+      req.session.socketRoom = `${req.body.playlist}#${afterHashtag}`
       req.session.playlistId = snap.val().id
       req.session.save()
+      console.log(`/playlists/${makeUrlSafe(beforeHashtag)}/${afterHashtag}`)
       res.redirect(`/playlists/${makeUrlSafe(beforeHashtag)}/${afterHashtag}`)
     } else {
       res.redirect(`/home`)
     }
-  })
+  }).then(() => console.log('Redirected to Playlist')).catch(err => console.warn('Failed to redirect', err))
 })
 
 module.exports = router

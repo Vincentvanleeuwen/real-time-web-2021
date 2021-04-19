@@ -52,6 +52,7 @@ router.post('/', (req, res) => {
   request.post(options, function(error, response, body) {
     playlistRef.set({
       id: body.id,
+      host: req.session.user.id,
       duration: req.body.duration,
       term: req.body.term,
       url: body.external_urls.spotify,

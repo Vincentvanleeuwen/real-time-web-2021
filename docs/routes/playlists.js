@@ -22,6 +22,11 @@ globalRef.on('value', function (snap) {
         return
       }
 
+      req.session.host = playlists[playlist].host
+      req.session.searchKey = playlists[playlist].searchKey
+      req.session.playlist = playlist
+      req.session.save()
+
       const playlistRef = firebase.database().ref('playlists/').child(`${playlist}`)
       playlistRef.on('value', (snap) => {
 
@@ -42,9 +47,9 @@ globalRef.on('value', function (snap) {
 
           songsRef.once('value', (snapshot) => {
             if(!snapshot.val()) {
-              songsRef.set(restructureSongs(filtered)).then(() => console.log('Set songs')).catch(err => console.log(err));
+              songsRef.set(restructureSongs(filtered)).then(() => console.log('Set songs')).catch(err => console.warn('SetSongError',err));
             }
-          }).then(() => console.log('Songs Completed')).catch(err => console.log(err));
+          }).then(() => console.log('Songs Completed')).catch(err => console.warn('songError',err));
 
           res.render('playlist', {
             layout: 'main',

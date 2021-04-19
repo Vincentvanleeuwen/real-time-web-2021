@@ -3,19 +3,13 @@ const peopleEl = document.querySelector('.people')
 socket.on('connect', () => {
   console.log('connected')
 })
-socket.on('add users', (users, currentUser) => {
-  console.log('userInAddUser', users)
-  updateUsers(users, currentUser)
-})
-socket.on('remove user', (users, currentUser) => {
+
+socket.on('update user', (users, currentUser, host) => {
   console.log('userInremoveUsers', users)
-  removeUser(users, currentUser)
+  updateUsers(users, currentUser, host)
 })
 
-const removeUser = (users, currentUser) => {
-  updateUsers(users, currentUser)
-}
-const updateUsers = (users, currentUser) => {
+const updateUsers = (users, currentUser, host) => {
   peopleEl.innerHTML = ''
   console.log(users, currentUser)
   const sortedUsers = users.sort((user, index) => {
@@ -23,6 +17,7 @@ const updateUsers = (users, currentUser) => {
   })
   console.log(sortedUsers)
   sortedUsers.forEach(user => {
+
     const personEl = document.createElement('section')
     personEl.classList.add('person')
 
@@ -36,6 +31,12 @@ const updateUsers = (users, currentUser) => {
 
     personEl.appendChild(imgEl)
     personEl.appendChild(nameEl)
+
+    if(user.id === host) {
+      const hostTag = document.createElement('div')
+      hostTag.classList.add('host-tag')
+      personEl.appendChild(hostTag)
+    }
 
     peopleEl.appendChild(personEl)
   })
