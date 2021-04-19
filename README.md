@@ -13,7 +13,7 @@ Check out the prototype @ https://xd.adobe.com/view/19b3c8d4-05bd-4ac2-ad30-a6d7
 
 This project is made for fun, so do with it as you wish :)
 
-## Concepts
+## Layout and Animations
 
 I've created three prototypes. If I had to choose for a design I would go with concept number two. 
 I had to make time for other problems in the application so I've decided to go with the third concept since it takes me a little less time. If I have time over I will create the second concept.
