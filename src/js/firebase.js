@@ -12,23 +12,18 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
-
-
 const deleteBtn = document.querySelectorAll('.delete')
 const playlist = document.querySelector('.playlist-name')
 const songContainer = document.querySelector('.songs')
 
-
 if(playlist) {
   const afterHashtag = /#([\w\d]+)/.exec(playlist.innerHTML)[1]
-  const beforeHashtag = /([\w\d]+)#/.exec(playlist.innerHTML)[1]
+  const beforeHashtag = /([\w\d\s]+)#/.exec(playlist.innerHTML)[1]
 
   const playlistRef = firebase.database().ref(`playlists/${beforeHashtag}`)
 
   playlistRef
-  .orderByChild("searchKey")
-  .on('value', (snap) => {
-    console.log(snap.val())
+  .get().then(snap => {
     if(snap.val().searchKey === afterHashtag) {
       deleteBtn.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -37,31 +32,34 @@ if(playlist) {
           let songEl = prevSibling.previousSibling.previousSibling.childNodes
           let songArtist = songEl[1].innerHTML
           let songName = songEl[3].innerHTML
-
           const songsRef = playlistRef.child(`/songs/${songContainer.classList[1]}`)
-          // songsRef.orderByChild('songName').equalTo(songName).set(null)
 
           e.currentTarget.parentElement.innerHTML = ''
-          // console.log(songArtist, ' - ', songName)
 
-          // songsRef.on('value', snap => {
-          //   console.log('deleteSnap', snap.val())
-          //   snap.forEach(snapshot => {
-          //     if(snapshot.val().songArtist === songArtist && snapshot.val().songName === songName) {
-          //       snapshot.val().remove()
-          //     }
-          //   })
-          // })
+          songsRef.get().then(snap => {
+            snap.forEach(snapshot => {
+              if(snapshot.val().songArtist === songArtist && snapshot.val().songName === songName) {
+                songsRef
+                  .orderByChild('uri')
+                  .equalTo(snapshot.val().uri)
+                  .once("value")
+                  .then(snapshot => {
+                    snapshot.forEach(child => {
+                      child
+                      .ref
+                      .remove()
+                      .then(() => 'Removed song')
+                      .catch(err => console.warn('songErr', err))
+                    })
+                  })
+                  .then(() => 'Removed song')
+                  .catch(err => console.warn('songRefErr', err))
+              }
+            })
+          }).catch(err => console.warn('playlistRefErr', err))
         })
       })
     }
-  })
-
-
-  //
-
-
-
-
+  }).catch(err => console.warn(err))
 
 }

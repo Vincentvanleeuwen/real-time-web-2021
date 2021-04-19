@@ -1,5 +1,4 @@
-const firebase = require('firebase/app')
-require('firebase/database')
+const { firebase } = require('../helpers/firebase')
 const router = require('express').Router()
 const request = require('request')
 const { randomString } = require('../utils/generateRandomString')
@@ -21,7 +20,8 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
 
   if(!req.session.user.id) {
-    res.redirect('/error')
+    res.redirect('/')
+    return
   }
 
   const playlistRef = firebase.database().ref('playlists/').child(`${req.body.playlist}`)

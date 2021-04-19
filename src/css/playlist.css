@@ -86,22 +86,45 @@ label[for="copy-text"], #copy-text {
 .people {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: .5fr 1fr;
+  grid-template-rows: 1fr;
 
 }
-.people .person:first-of-type {
+.people .host{
   grid-column-start: 2;
   grid-row-start: 2;
 }
-.people .person:nth-child(2) {
-  grid-column-start: 1;
-  grid-row-start: 2;
+.people .person:not(.host) {
   transform: scale(.6);
 }
-.people .person:nth-child(3) {
+
+.people .person:nth-child(2):not(.host) {
   grid-column-start: 3;
   grid-row-start: 2;
-  transform: scale(.6);
+}
+.people .person:nth-child(3):not(.host) {
+  grid-column-start: 1;
+  grid-row-start: 2;
+}
+.people .person:nth-child(4):not(.host) {
+  grid-column-start: 1;
+  grid-row-start: 1;
+}
+.people .person:nth-child(5):not(.host) {
+  grid-column-start: 2;
+  grid-row-start: 1;
+}
+.people .person:nth-child(6):not(.host) {
+  grid-column-start: 3;
+  grid-row-start: 1;
 }
 
-
+.host-tag {
+  background-image: url('../img/crown.png');
+  transform: rotate(
+    336deg
+  ) translate(-40px, -15px);
+  height: 1.5em;
+  width: 2.5em;
+  background-size: contain;
+  background-repeat: no-repeat;
+}

@@ -1,5 +1,7 @@
-const firebase = require('firebase/app')
-require('firebase/database')
+// const firebase = require('firebase/app')
+// require('firebase/database')
+const { firebase } = require('../helpers/firebase')
+
 const router = require('express').Router()
 const request = require('request')
 const { deleteColumns, restructureSongs } = require('../helpers/transformData')
@@ -45,11 +47,14 @@ globalRef.on('value', function (snap) {
 
           const songsRef = firebase.database().ref(`playlists/${playlist}/songs/${req.session.user.id}`)
 
-          songsRef.once('value', (snapshot) => {
+          songsRef.get().then((snapshot) => {
             if(!snapshot.val()) {
-              songsRef.set(restructureSongs(filtered)).then(() => console.log('Set songs')).catch(err => console.warn('SetSongError',err));
+              songsRef
+                .set(restructureSongs(filtered))
+                .then(() => console.log('Set songs'))
+                .catch(err => console.warn('SetSongError',err));
             }
-          }).then(() => console.log('Songs Completed')).catch(err => console.warn('songError',err));
+          }).catch(err => console.warn('songError',err));
 
           res.render('playlist', {
             layout: 'main',
@@ -60,6 +65,8 @@ globalRef.on('value', function (snap) {
             playlistTitleUrlSafe: makeUrlSafe(playlist),
             playlistUrl: snap.val().url,
             searchKey: snap.val().searchKey,
+            users: snap.val().activeUsers ? Object.values(snap.val().activeUsers) : null,
+            isHost: snap.val().host,
             songs: restructureSongs(filtered)
           });
         });
@@ -67,7 +74,8 @@ globalRef.on('value', function (snap) {
     })
 
     router.post(`/${makeUrlSafe(playlist)}/${playlists[playlist].searchKey}`, (req, res) => {
-      if(!req.session.access_token) {
+
+      if(!req.session.access_token){
         res.redirect('/')
         return
       }
@@ -114,7 +122,7 @@ globalRef.on('value', function (snap) {
           // use the access token to access the Spotify Web API
           request.post(options, (error, response, body) => {
             if(!body.error) {
-              res.redirect(`/playlists/${makeUrlSafe(playlist)}/${playlists[playlist].searchKey}`)
+              return res.redirect(`/playlists/${makeUrlSafe(playlist)}/${playlists[playlist].searchKey}`)
             }
           })
         })

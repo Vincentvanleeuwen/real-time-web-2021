@@ -21,6 +21,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  position: relative;
   margin-top: 3em;
 }
 .home-options input[type="submit"] {
@@ -55,4 +56,11 @@
 .home-options input:focus {
   outline: var(--cta-color) solid 2px;
   color: var(--light-color);
+}
+
+.error {
+  position: absolute;
+  bottom: -5em;
+  font-size: clamp(.6rem, 3vw, .8rem);
+  color: orangered;
 }

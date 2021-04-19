@@ -1,6 +1,6 @@
 const sharedSessions = require('express-socket.io-session')
-const { combineUser, getUsers } = require('./user')
-
+const { combineUser, getUsers, deleteUser } = require('./user')
+const { makeUrlSafe} = require('../utils/makeUrlSafe')
 const initSocketIO = (server, newSession) => {
   const io = require('socket.io')(server)
 
@@ -8,25 +8,35 @@ const initSocketIO = (server, newSession) => {
 
   io.on('connection', (socket) => {
 
-    if(!socket.handshake.session.user || !socket.handshake.session.socketRoom) return
+    if(!socket.handshake.session.user || !socket.handshake.session.socketRoom || !socket.handshake.session.playlist ||
+      !socket.handshake.session.searchKey) return
 
-    let user = combineUser(socket.handshake.session.playlist, socket.handshake.session.searchKey, socket.id, socket.handshake.session.user)
+    let user = combineUser(
+      socket.handshake.session.playlist,
+      socket.handshake.session.searchKey,
+      socket.id,
+      socket.handshake.session.user
+    )
 
-    let users = getUsers(socket.handshake.session.playlist, socket.handshake.session.searchKey);
-    socket.handshake.session.users = users
-    socket.handshake.session.save()
+    socket.join(makeUrlSafe(socket.handshake.session.socketRoom))
 
-    socket.join(socket.handshake.session.socketRoom)
-    console.log('users and user', users, user)
-    console.log('sockethost', socket.handshake.session.host, socket.id)
-    io.to(socket.handshake.session.socketRoom).emit('update users', users, socket.id, socket.handshake.session.host)
+    io
+      .in(socket.handshake.session.socketRoom)
+      .emit('update users',
+        getUsers(socket.handshake.session.playlist, socket.handshake.session.searchKey),
+        socket.handshake.session.socketRoom
+      )
 
     socket.on('disconnect', () => {
-      let newUsers = socket.handshake.session.users.filter(user => user.socketId !== socket.id)
+      console.log('disconnected', socket.handshake.session.socketRoom, user)
+      deleteUser(socket.handshake.session.playlist, socket.handshake.session.searchKey, user.id)
 
-      io.to(socket.handshake.session.socketRoom).emit('update user', newUsers, socket.id, socket.handshake.session.host)
-
-
+      io.in(socket.handshake.session.socketRoom).emit('update users',
+        getUsers(socket.handshake.session.playlist, socket.handshake.session.searchKey),
+        socket.handshake.session.socketRoom
+      )
+      socket.handshake.session.socketRoom = null
+      socket.handshake.session.save();
     })
   })
 }

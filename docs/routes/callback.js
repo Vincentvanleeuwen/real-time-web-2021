@@ -51,7 +51,6 @@ router.get('/', function(req, res) {
       req.session.save();
 
       res.redirect('/home' );
-
     });
   }
 });

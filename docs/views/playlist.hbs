@@ -1,5 +1,19 @@
 <main class="playlist-main">
   <section class="people">
+
+    {{#each users}}
+      {{#ifCond this.id ../isHost}}
+        <section class="person host">
+
+          <div class="host-tag"> </div>
+      {{else}}
+        <section class="person">
+      {{/ifCond}}
+        <img src="{{this.image}}"
+             alt="{{this.name}} profile image">
+        <h2 class="name">{{this.name}}</h2>
+      </section>
+    {{/each}}
   </section>
 
 
@@ -11,11 +25,11 @@
         <textarea id="copy-text">{{ playlistUrl }}</textarea>
       </label>
 
-
-      <form action="/playlists/{{ playlistTitleUrlSafe }}/{{searchKey}}" method="post">
-        <button id="save-button" class="btn">Add your addition</button>
-      </form>
-
+      {{#if isHost}}
+        <form action="/playlists/{{ playlistTitleUrlSafe }}/{{searchKey}}" method="post">
+          <button id="save-button" class="btn">Add all additions</button>
+        </form>
+      {{/if}}
     </div>
   </section>
 

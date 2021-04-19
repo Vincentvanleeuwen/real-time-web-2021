@@ -1,5 +1,4 @@
-const firebase = require('firebase/app')
-require('firebase/database')
+const { firebase } = require('../helpers/firebase')
 const router = require('express').Router()
 const request = require('request')
 const { deleteColumns, restructureData } = require('../helpers/transformData')
@@ -42,19 +41,25 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
 
   const afterHashtag = /#([\w\d]+)/.exec(req.body.searchPlaylist)[1]
-  const beforeHashtag = /([\w\d]+)#/.exec(req.body.searchPlaylist)[1]
-  console.log('hello', beforeHashtag, afterHashtag)
+  const beforeHashtag = /([\w\d\s]+)#/.exec(req.body.searchPlaylist)[1]
+  console.log('hello', req.body.searchPlaylist , beforeHashtag, afterHashtag)
   const playlistRef = firebase.database().ref('playlists/').child(`${beforeHashtag}`)
 
   playlistRef.once('value', (snap) => {
     if(snap.val()) {
-      req.session.socketRoom = `${req.body.playlist}#${afterHashtag}`
+      req.session.socketRoom = `${beforeHashtag}#${afterHashtag}`
       req.session.playlistId = snap.val().id
       req.session.save()
+      console.log('socketRoom in home.js', req.session.socketRoom)
       console.log(`/playlists/${makeUrlSafe(beforeHashtag)}/${afterHashtag}`)
       res.redirect(`/playlists/${makeUrlSafe(beforeHashtag)}/${afterHashtag}`)
     } else {
-      res.redirect(`/home`)
+      res.render('home', {
+        layout: 'main',
+        name: req.session.user.name,
+        img: req.session.user.image,
+        error: 'This code was incorrect, please try again!'
+      })
     }
   }).then(() => console.log('Redirected to Playlist')).catch(err => console.warn('Failed to redirect', err))
 })

@@ -13,6 +13,9 @@
           Search for a playlist
           <input type="text" name="searchPlaylist" placeholder="e.g. playlist#aE2Gv2">
         </label>
+        {{#if error}}
+          <p class="error"> {{ error }}</p>
+        {{/if}}
         <input type="submit" value="Search">
       </form>
 

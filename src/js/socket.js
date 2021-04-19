@@ -1,25 +1,29 @@
 const socket = io('localhost:3000')
 const peopleEl = document.querySelector('.people')
+
 socket.on('connect', () => {
   console.log('connected')
 })
 
-socket.on('update user', (users, currentUser, host) => {
-  console.log('userInremoveUsers', users)
-  updateUsers(users, currentUser, host)
+socket.on('update users', (playlist, socketRoom) => {
+  console.log('socket room =', socketRoom)
+  updateUsers(playlist)
 })
 
-const updateUsers = (users, currentUser, host) => {
+const updateUsers = (playlist) => {
   peopleEl.innerHTML = ''
-  console.log(users, currentUser)
-  const sortedUsers = users.sort((user, index) => {
-    return user.socketId === currentUser ? -1 : index === currentUser ? 1 : 0;
-  })
-  console.log(sortedUsers)
-  sortedUsers.forEach(user => {
-
+  console.log(Object.values(playlist.activeUsers))
+  Object.values(playlist.activeUsers).forEach(user => {
     const personEl = document.createElement('section')
     personEl.classList.add('person')
+
+    if(user.id === playlist.host) {
+      personEl.classList.add('host')
+
+      const hostTag = document.createElement('div')
+      hostTag.classList.add('host-tag')
+      personEl.appendChild(hostTag)
+    }
 
     const imgEl = document.createElement('img')
     imgEl.src = user.image
@@ -32,14 +36,7 @@ const updateUsers = (users, currentUser, host) => {
     personEl.appendChild(imgEl)
     personEl.appendChild(nameEl)
 
-    if(user.id === host) {
-      const hostTag = document.createElement('div')
-      hostTag.classList.add('host-tag')
-      personEl.appendChild(hostTag)
-    }
-
     peopleEl.appendChild(personEl)
   })
 
 }
-

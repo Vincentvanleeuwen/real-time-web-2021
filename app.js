@@ -1,13 +1,3 @@
-/**
- * This is an example of a basic node.js script that performs
- * the Authorization Code oAuth2 flow to authenticate against
- * the Spotify Accounts.
- *
- * For more information, read
- * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
- */
-const firebase = require('firebase/app')
-require('firebase/database')
 const http = require('http')
 const compression = require('compression')
 const express = require('express') // Express web server framework
@@ -15,8 +5,6 @@ const handlebars = require('express-handlebars')
 const session = require('express-session')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-
-
 
 if(process.env.NODE_ENV !== 'production'){
   require('dotenv').config()
@@ -36,20 +24,6 @@ const newSession = session({
   },
 })
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDnBaT31_LbWAjiRd7isQ1pPdiDVD1HmtQ",
-  authDomain: "combinify-b1222.firebaseapp.com",
-  databaseURL: "combinify-b1222-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "combinify-b1222",
-  storageBucket: "combinify-b1222.appspot.com",
-  messagingSenderId: "274350746286",
-  appId: "1:274350746286:web:ee843bfbd1f420cb235b3f",
-  measurementId: "G-1PDBZFE48J"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig)
-
 // Require the routes
 const home = require('./docs/routes/home')
 const login = require('./docs/routes/login')
@@ -64,7 +38,8 @@ app.set('view engine', 'hbs');
 app.set('views', __dirname + '/docs/views')
 app.engine('hbs', handlebars({
   extname: 'hbs',
-  defaultLayout: 'main'
+  defaultLayout: 'main',
+  helpers: require('./docs/config/handlebarsHelpers')
 }))
 app.set('trust proxy', 1)
 app.use(express.static(__dirname + '/public'))
