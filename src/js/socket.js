@@ -1,4 +1,5 @@
-const socket = io('localhost:3000')
+// const socket = io('localhost:3000')
+const socket = io('combinify.herokuapp.com')
 const peopleEl = document.querySelector('.people')
 
 socket.on('connect', () => {
