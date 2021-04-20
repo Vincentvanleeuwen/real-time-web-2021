@@ -15,6 +15,7 @@ const app = express();
 const server = http.createServer(app)
 const { initSocketIO } = require('./docs/helpers/socket')
 
+// Create a session
 const newSession = session({
   secret: 'combinify-secret',
   resave: true,
@@ -57,6 +58,7 @@ app.use(express.static(__dirname + '/public'))
   .use('/offline', offline)
   .use('/*', error)
 
+// Initialize Socket.io
 initSocketIO(server, newSession)
 
 server.listen(port, () => {

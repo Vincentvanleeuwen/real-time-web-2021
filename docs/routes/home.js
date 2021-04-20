@@ -17,12 +17,13 @@ router.get('/', (req, res) => {
     json: true
   }
 
-  // use the access token to access the Spotify Web API
+  // Get the profile data from spotify
   request.get(options, function(error, response, body) {
-
+    // Clean the profile data from spotify
     let filtered = deleteColumns(body);
     let restructured = restructureData(filtered)
 
+    // Set the user
     req.session.user = {
       id: restructured[0].id,
       name: restructured[0].name,
@@ -40,18 +41,19 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
+  // get the combinify playlist and searchKey
   const afterHashtag = /#([\w\d]+)/.exec(req.body.searchPlaylist)[1]
   const beforeHashtag = /([\w\d\s]+)#/.exec(req.body.searchPlaylist)[1]
-  console.log('hello', req.body.searchPlaylist , beforeHashtag, afterHashtag)
-  const playlistRef = firebase.database().ref('playlists/').child(`${beforeHashtag}`)
 
+  const playlistRef = firebase.database().ref('playlists/').child(`${beforeHashtag}`)
   playlistRef.once('value', (snap) => {
     if(snap.val()) {
+
+      // Set the socket room for socket.io
       req.session.socketRoom = `${beforeHashtag}#${afterHashtag}`
       req.session.playlistId = snap.val().id
       req.session.save()
-      console.log('socketRoom in home.js', req.session.socketRoom)
-      console.log(`/playlists/${makeUrlSafe(beforeHashtag)}/${afterHashtag}`)
+      // Redirect to the playlist
       res.redirect(`/playlists/${makeUrlSafe(beforeHashtag)}/${afterHashtag}`)
     } else {
       res.render('home', {

@@ -1,4 +1,8 @@
-/* Randomize array in-place using Durstenfeld shuffle algorithm */
+/* https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array */
+/**
+ * Randomize array in-place using Durstenfeld shuffle algorithm"
+ * @param  {array} the array that needs shuffling
+ */
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

@@ -4,7 +4,6 @@
  * @return {string} the changed string
  */
 
-
 const makeUrlSafe = (name) => {
   return name.replace(/\s+/g, '-').toLowerCase()
 }

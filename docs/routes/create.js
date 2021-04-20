@@ -41,24 +41,32 @@ router.post('/', (req, res) => {
     }),
     json: true
   }
+
+  // Create a searchKey
   let searchKey = randomString(6);
 
+  // Check if the searchKey exists, if it exists set the searchKey to a new randomString
   playlistRef.orderByChild("searchKey").equalTo(searchKey).on("value",snap => {
     if (snap.exists()){
       searchKey = randomString(6);
     }
   });
-  // use the access token to access the Spotify Web API
+
+  // Push a playlist into the spotify API
   request.post(options, function(error, response, body) {
-    playlistRef.set({
-      id: body.id,
-      host: req.session.user.id,
-      duration: req.body.duration,
-      term: req.body.term,
-      url: body.external_urls.spotify,
-      searchKey: searchKey
-    }).then(() => console.log('succesfully set')).catch(err => console.log(err));
+
     if(!body.error) {
+
+      // Set the playlist in Firebase
+      playlistRef.set({
+        id: body.id,
+        host: req.session.user.id,
+        duration: req.body.duration,
+        term: req.body.term,
+        url: body.external_urls.spotify,
+        searchKey: searchKey
+      }).then(() => console.log('succesfully set')).catch(err => console.log(err));
+
       req.session.playlistUrl = body.external_urls.spotify
       req.session.playlistId = body.id
       req.session.playlistName = req.body.playlist

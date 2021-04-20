@@ -21,7 +21,7 @@ const initSocketIO = (server, newSession) => {
     socket.join(makeUrlSafe(socket.handshake.session.socketRoom))
 
     io
-      .in(socket.handshake.session.socketRoom)
+      .to(socket.handshake.session.socketRoom)
       .emit('update users',
         getUsers(socket.handshake.session.playlist, socket.handshake.session.searchKey),
         socket.handshake.session.socketRoom
@@ -31,7 +31,7 @@ const initSocketIO = (server, newSession) => {
       console.log('disconnected', socket.handshake.session.socketRoom, user)
       deleteUser(socket.handshake.session.playlist, socket.handshake.session.searchKey, user.id)
 
-      io.in(socket.handshake.session.socketRoom).emit('update users',
+      io.to(socket.handshake.session.socketRoom).emit('update users',
         getUsers(socket.handshake.session.playlist, socket.handshake.session.searchKey),
         socket.handshake.session.socketRoom
       )

@@ -15,7 +15,7 @@ router.get('/login', (req, res) => {
   let state = randomString(16);
   res.cookie(stateKey, state);
 
-  // your application requests authorization
+  // Set the scopes for spotify
   const scope = 'user-read-email user-read-private user-library-read user-top-read playlist-read-collaborative' +
     ' playlist-modify-public playlist-modify-private'
 

@@ -19,7 +19,6 @@
 
 body {
   margin: 0;
-  padding: 0 1em 5em 1em;
   background-color: var(--dark-color);
   display: flex;
   flex-direction: column;

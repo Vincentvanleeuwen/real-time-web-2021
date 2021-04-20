@@ -9,6 +9,7 @@ const { makeUrlSafe } = require('../utils/makeUrlSafe')
 const { shuffleArray } = require('../utils/shuffleArray')
 
 const globalRef = firebase.database().ref('playlists/')
+
 globalRef.on('value', function (snap) {
   let playlists = snap.val()
   if(!playlists) {
@@ -17,6 +18,7 @@ globalRef.on('value', function (snap) {
   let playlistKeys = Object.keys(playlists)
   playlistKeys.forEach((playlist) => {
 
+    // Get all playlist routes from Firebase
     router.get(`/${makeUrlSafe(playlist)}/${playlists[playlist].searchKey}`, (req, res) => {
 
       if(!req.session.user) {
@@ -41,12 +43,15 @@ globalRef.on('value', function (snap) {
           json: true
         };
 
-        // use the access token to access the Spotify Web API
+        // Get a users top song list
         request.get(options, (error, response, body) => {
+
+          // Filter the data
           let filtered = deleteColumns(body)
 
           const songsRef = firebase.database().ref(`playlists/${playlist}/songs/${req.session.user.id}`)
 
+          // Add the songs to firebase
           songsRef.get().then((snapshot) => {
             if(!snapshot.val()) {
               songsRef
@@ -56,6 +61,7 @@ globalRef.on('value', function (snap) {
             }
           }).catch(err => console.warn('songError',err));
 
+          // Render the playlist
           res.render('playlist', {
             layout: 'main',
             userId: req.session.user.id,
