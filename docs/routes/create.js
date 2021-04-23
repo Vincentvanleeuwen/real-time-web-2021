@@ -46,34 +46,34 @@ router.post('/', (req, res) => {
   let searchKey = randomString(6);
 
   // Check if the searchKey exists, if it exists set the searchKey to a new randomString
-  playlistRef.orderByChild("searchKey").equalTo(searchKey).on("value",snap => {
-    if (snap.exists()){
-      searchKey = randomString(6);
-    }
-  });
+  playlistRef.orderByChild("searchKey").equalTo(searchKey).get().then(snap => {
+    if (snap.exists()) {searchKey = randomString(6)}
 
-  // Push a playlist into the spotify API
-  request.post(options, function(error, response, body) {
+    // Push a playlist into the spotify API
+    request.post(options, function(error, response, body) {
 
-    if(!body.error) {
+      if(!body.error) {
 
-      // Set the playlist in Firebase
-      playlistRef.set({
-        id: body.id,
-        host: req.session.user.id,
-        duration: req.body.duration,
-        term: req.body.term,
-        url: body.external_urls.spotify,
-        searchKey: searchKey
-      }).then(() => console.log('succesfully set')).catch(err => console.log(err));
+        // Set the playlist in Firebase
+        playlistRef.set({
+          id: body.id,
+          host: req.session.user.id,
+          duration: req.body.duration,
+          term: req.body.term,
+          url: body.external_urls.spotify,
+          searchKey: searchKey
+        }).then(() => {
 
-      req.session.playlistUrl = body.external_urls.spotify
-      req.session.playlistId = body.id
-      req.session.playlistName = req.body.playlist
-      req.session.socketRoom = `${req.body.playlist}#${searchKey}`
-      req.session.save()
-      res.redirect(`/playlists/${makeUrlSafe(req.body.playlist)}/${searchKey}`)
-    }
+          req.session.playlistUrl = body.external_urls.spotify
+          req.session.playlistId = body.id
+          req.session.playlistName = req.body.playlist
+          req.session.socketRoom = `${req.body.playlist}#${searchKey}`
+          req.session.save()
+          res.redirect(`/playlists/${makeUrlSafe(req.body.playlist)}/${searchKey}`)
+
+        }).catch(err => console.log(err))
+      }
+    })
   })
 })
 

@@ -2,22 +2,19 @@ const { firebase } = require('./firebase')
 
 const playlistRef = firebase.database().ref('playlists/')
 
-let allUsers
+const combineUser = async (playlist, searchKey, socketId, user) => {
 
-const combineUser = (playlist, searchKey, socketId, user) => {
-
-  let duplicate = false;
-
-  playlistRef
+  const combinedUser = await playlistRef
     .child(`${playlist}`)
     .orderByChild('searchKey')
     .get().then(snap => {
+
+      let duplicate = false;
       if(snap.val().searchKey === searchKey) {
 
         // Check if user already exists
         if(snap.val().activeUsers) {
           Object.values(snap.val().activeUsers).forEach(activeUser => {
-            console.log('activeUsers', activeUser.id, user.id)
             if (activeUser.id === user.id) {
               duplicate = true
             }
@@ -32,70 +29,62 @@ const combineUser = (playlist, searchKey, socketId, user) => {
             .then(() => console.log('updated'))
             .catch(err => console.warn('error updating', err))
         }
+        return { ...user, socketId }
       }
     })
     .catch((err) => console.log('error getting playlist', err))
 
 
-  return { ...user, socketId }
+  return combinedUser
 }
 
 const getUsers = async (playlist, searchKey) => {
+  return await playlistRef
+  .child(`${playlist}`)
+  .orderByChild('searchKey')
+  .get().then(snap => {
+    if (snap.val().searchKey === searchKey) {
+      return snap.val()
+    }
 
-  playlistRef
-    .child(`${playlist}`)
-    .orderByChild('searchKey')
-    .once('value', (snap) => {
-
-      if(snap.val().searchKey === searchKey) {
-        allUsers = snap.val()
-      }
-
-    })
-    .then((snap) => console.log('Got all users'))
-    .catch((err) => console.warn('error getting users', err))
-
-  return await allUsers
+  })
+  .catch((err) => console.warn('error getting users', err))
 }
 
 const deleteUser = (playlist, searchKey, id) => {
-
+  console.log('test1')
   // Get playlist
-  playlistRef.child(`${playlist}`)
+  return playlistRef.child(`${playlist}`)
     .orderByChild('searchKey')
     .get().then(snap => {
       if(snap.val().searchKey === searchKey) {
 
         // Get active users
-        playlistRef.child(`${playlist}`)
-        .child('activeUsers').get().then('value', (snapshot) => {
+        return playlistRef.child(playlist)
+        .child('activeUsers').get().then(snapshot => {
 
-          Object.values(snapshot.val()).forEach((person, i) => {
-            if(person.id === id) {
+          const people = Object.entries(snapshot.val())
+          .filter(([key, person]) => {
+            return person.id === id && snap.val().host !== id
+          })
 
-              // If its the host, dont delete
-              if(snap.val().host === id) { return }
+          if(!people.length) return
 
-              // Delete user
-              playlistRef
-                .child(`${playlist}`)
-                .child('activeUsers')
-                .child(Object.keys(snapshot.val())[i])
-                .remove()
-                .then(() => console.log('removed user'))
-                .catch(err => console.log('error removing item', err))
-
+          // Delete user
+          return playlistRef
+            .child(`${playlist}`)
+            .child('activeUsers')
+            .child(people[0][0])
+            .remove()
+            .then(() => {
               // Delete user song addition
-              console.log(id)
-              playlistRef
+              return playlistRef
                 .child(`${playlist}`)
                 .child('songs')
                 .child(id)
                 .remove()
-                .then(() => console.log('removed songs'))
-                .catch(err => console.log('error removing item', err))
-            }
-          })
+            })
+
         }).catch(err => console.warn('error getting Active Users', err))
       }
     })
