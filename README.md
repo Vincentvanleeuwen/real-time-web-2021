@@ -127,11 +127,12 @@ Check out the [Reference](https://developer.spotify.com/documentation/web-api/re
 - [x] Add songs to the playlist
 - [x] Set playlist name
 - [x] Set max amount of songs
-- [ ] Visit other peoples lists
 - [x] Add songs to a playlist
 - [x] Add more profiles
-- [ ] View other peoples top tracks
+- [x] View other peoples top tracks
 - [x] Delete songs from a playlist
+- [ ] Add animations on songs added
+
 <!-- How about a license here? 📜 (or is it a licence?) 🤷 -->
 ## Sources
 
