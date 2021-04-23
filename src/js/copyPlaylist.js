@@ -1,21 +1,34 @@
 const copyBtn = document.getElementById('copy-button')
 const copyTxt = document.getElementById('copy-text')
+const playlistTxt = document.getElementById('playlist-name-text')
+const playlistCode = document.querySelector('.playlist-name')
+
 
 if(copyBtn && copyTxt) {
-  copyBtn.addEventListener('click', () => {
+  const createCopyElement = (button, textEl, type) => {
+    button.addEventListener('click', () => {
+      let resetText = button.innerHTML
+      textEl.focus()
+      textEl.select()
+      textEl.setSelectionRange(0, 99999)
 
-    // Select the url
-    copyTxt.focus()
-    copyTxt.select()
+      try {
+        const successful = document.execCommand('copy')
+        const msg = successful ? 'successful' : 'unsuccessful'
+        console.log('Copying text command was ' + msg)
+        button.innerHTML = "Copied " + type
+        setTimeout(() => {
+          button.innerHTML = resetText
+        }, 3000)
+      } catch (err) {
+        console.log('Oops, unable to copy', err)
+        button.innerHTML = "Please retry"
+      }
+    })
+  }
 
-    try {
-      const successful = document.execCommand('copy')
-      const msg = successful ? 'successful' : 'unsuccessful'
-      console.log('Copying text command was ' + msg)
-      copyBtn.innerHTML = "Copied URL"
-    } catch (err) {
-      console.log('Oops, unable to copy')
-      copyBtn.innerHTML = "Please retry"
-    }
-  })
+  createCopyElement(copyBtn, copyTxt, 'URL')
+  createCopyElement(playlistCode, playlistTxt, 'Code')
 }
+
+

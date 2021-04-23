@@ -1,6 +1,9 @@
 <main class="playlist-main">
   <section class="playlist-options">
-    <h2 class="playlist-name">{{ playlistTitle }}#{{searchKey}}</h2>
+    <button class="playlist-name">{{ playlistTitle }}#{{searchKey}}</button>
+    <label for="playlist-name-text">
+      <textarea id="playlist-name-text">{{ playlistTitle }}#{{searchKey}}</textarea>
+    </label>
     <div class="share-buttons show-screen-flex">
       <button id="copy-button" class="btn">Spotify Link</button>
       <label for="copy-text">
@@ -19,7 +22,7 @@
 
       {{#each users}}
 
-        {{#ifCond this.id ../isHost}}
+        {{#ifCond this.id ../host}}
         <section class="person host {{../this.id}}">
           <div class="host-tag"> </div>
         {{else}}
@@ -37,8 +40,8 @@
         {{#each songs}}
           <section>
             <div>
-              <p class="songArtist">{{songArtist}}</p>
               <p class="songName">{{songName}}</p>
+              <p class="songArtist">{{songArtist}}</p>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" height="50" viewBox="0 0 24 24" width="50" class="delete">
               <path d="M0 0h24v24H0z" fill="none"/>

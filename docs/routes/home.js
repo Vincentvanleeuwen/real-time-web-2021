@@ -40,19 +40,29 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
+  // Check if theres a hashtag
+  if(!req.body.searchPlaylist.includes('#')) {
+    return res.render('home', {
+      layout: 'main',
+      name: req.session.user.name,
+      img: req.session.user.image,
+      error: 'This code was incorrect, please try again!'
+    })
+  }
 
   // get the combinify playlist and searchKey
   const afterHashtag = /#([\w\d]+)/.exec(req.body.searchPlaylist)[1]
   const beforeHashtag = /([\w\d\s]+)#/.exec(req.body.searchPlaylist)[1]
 
   const playlistRef = firebase.database().ref('playlists/').child(`${beforeHashtag}`)
-  playlistRef.once('value', (snap) => {
+  playlistRef.get().then(snap => {
     if(snap.val()) {
 
       // Set the socket room for socket.io
       req.session.socketRoom = `${beforeHashtag}#${afterHashtag}`
       req.session.playlistId = snap.val().id
       req.session.save()
+      console.log(`/playlists/${makeUrlSafe(beforeHashtag)}/${afterHashtag}`)
       // Redirect to the playlist
       res.redirect(`/playlists/${makeUrlSafe(beforeHashtag)}/${afterHashtag}`)
     } else {

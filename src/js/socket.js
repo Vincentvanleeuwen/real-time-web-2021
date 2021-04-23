@@ -1,17 +1,34 @@
 const socket = io()
 
 const peopleEl = document.querySelector('.people')
+const songsEl = document.querySelector('.songs')
+const saveBtn = document.getElementById('save-button')
 
 window.addEventListener('load', () => {
   if (window.location.pathname.startsWith('/playlists')) {
     socket.on('connect', () => {
 
       console.log('connected')
+
     })
 
     socket.on('update users', playlist => {
       updateUsers(playlist)
     })
+
+
+    saveBtn.addEventListener('click', () => {
+      console.log('clicked!')
+      socket.emit('add songs')
+    })
+
+    socket.on('animate songs', test => {
+      console.log('Animation fired', test)
+      animateSongs()
+
+    })
+
+
   }
 })
 
@@ -25,11 +42,11 @@ const updateUsers = (playlist) => {
 
     if(user.id === playlist.host) {
       personEl.classList.add('host')
-
       const hostTag = document.createElement('div')
       hostTag.classList.add('host-tag')
       personEl.appendChild(hostTag)
     }
+    personEl.classList.add(user.id)
 
     const imgEl = document.createElement('img')
     imgEl.src = user.image
@@ -46,3 +63,9 @@ const updateUsers = (playlist) => {
   })
 }
 
+const animateSongs = () => {
+  console.log('In animation!')
+  songsEl.forEach(song => {
+    console.log(song)
+  })
+}

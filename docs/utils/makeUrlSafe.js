@@ -5,9 +5,14 @@
  */
 
 const makeUrlSafe = (name) => {
-  return name.replace(/\s+/g, '-').toLowerCase()
+  return name.replace(/\s+/g, '-')
+}
+
+const makeUrlUnsafe = (name) => {
+  return name.replace(/-+/g, ' ')
 }
 
 module.exports = {
-  makeUrlSafe
+  makeUrlSafe,
+  makeUrlUnsafe
 }

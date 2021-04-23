@@ -2,21 +2,19 @@ const { firebase } = require('../helpers/firebase')
 const router = require('express').Router()
 const request = require('request')
 const { deleteColumns, restructureSongs } = require('../helpers/transformData')
-const { makeUrlSafe } = require('../utils/makeUrlSafe')
+const { makeUrlSafe, makeUrlUnsafe } = require('../utils/makeUrlSafe')
 const { shuffleArray } = require('../utils/shuffleArray')
 
 const globalRef = firebase.database().ref('playlists/')
 
 router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
 
-  const playlist = req.playlist
-
-  console.log('session', req.session)
-
   if(!req.session.user) {
     res.redirect('/')
     return
   }
+
+  const playlist = req.playlist
 
   req.session.host = playlist.host
   req.session.searchKey = playlist.searchKey
@@ -34,7 +32,7 @@ router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
 
   // Get a users top song list
   request.get(options, (error, response, body) => {
-    console.log('test1')
+
     // Filter the data
     let filtered = deleteColumns(body)
 
@@ -43,7 +41,6 @@ router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
     // Add the songs to firebase
     songsRef.get().then((snapshot) => {
 
-      console.log('test2')
       if (!snapshot.val()) {
         return songsRef
         .set(restructureSongs(filtered))
@@ -58,13 +55,9 @@ router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
         playlistTitleUrlSafe: makeUrlSafe(playlist.name),
         playlistUrl: playlist.url,
         searchKey: playlist.searchKey,
-        users: playlist.activeUsers ? Object.values(playlist.activeUsers) :
-          [{
-            id: req.session.user.id,
-            image: req.session.user.image,
-            name: req.session.user.name
-          }],
-        isHost: playlist.host,
+        users: playlist.activeUsers ? Object.values(playlist.activeUsers) : [],
+        isHost: playlist.host === req.session.user.id,
+        host: playlist.host,
         songs: restructureSongs(filtered)
       });
     })
@@ -137,20 +130,21 @@ router.post('/:playlistName/:searchKey', getPlaylist, (req, res) => {
 })
 
 function getPlaylist(req, res, next) {
+
   const { playlistName, searchKey } = req.params
-  console.log(typeof playlistName, typeof searchKey)
+  const unsafePlaylistName = makeUrlUnsafe(playlistName)
 
-  globalRef.child(playlistName).orderByChild('searchKey').get().then(snap => {
-    if (!snap.val()) return res.status(404).redirect('/')
+  globalRef.child(unsafePlaylistName).orderByChild('searchKey').get().then(snap => {
 
+    if (!snap.val()) return res.status(404).redirect('/home')
     if(snap.val().searchKey !== searchKey) return res.status(404).redirect('/')
 
     req.playlist = snap.val()
-    req.playlist.name = playlistName
+    req.playlist.name = unsafePlaylistName
     next()
   }).catch(err => {
     console.error(err)
-    res.status(500).send(err.message)
+    return res.status(500).redirect('/home')
   })
 }
 

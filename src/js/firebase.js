@@ -22,13 +22,14 @@ const personEl = document.querySelectorAll('.person')
 if(playlist) {
   const afterHashtag = /#([\w\d]+)/.exec(playlist.innerHTML)[1]
   const beforeHashtag = /([\w\d\s]+)#/.exec(playlist.innerHTML)[1]
-  const songsId = songContainer.classList[1]
+  const currentUser = songContainer.classList[1]
   const playlistRef = firebase.database().ref(`playlists/${beforeHashtag}`)
 
 
   personEl.forEach(person => {
 
-    setSelected(person, songsId)
+
+    setSelected(person, currentUser)
 
     person.addEventListener('click', (e) => {
       const personId = person.classList[[person.classList.length - 1]]
@@ -64,7 +65,19 @@ if(playlist) {
                   nameEl.innerHTML = `${song.songName}`
                   songEl.appendChild(nameEl)
                   songEl.appendChild(artistEl)
+
+
                   artistContainer.appendChild(songEl)
+                  if(personId === currentUser) {
+                    const deleteBtn = `
+                     <svg xmlns="http://www.w3.org/2000/svg" height="50" viewBox="0 0 24 24" width="50" class="delete">
+                      <path d="M0 0h24v24H0z" fill="none"/>
+                      <path d="M0 0h24v24H0V0z" fill="none"/>
+                      <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
+                    </svg>
+                    `
+                    artistContainer.innerHTML += deleteBtn
+                  }
                   containerOfSongs.appendChild(artistContainer)
                 })
               }
@@ -114,7 +127,6 @@ if(playlist) {
                       .catch(err => console.warn('songErr', err))
                     })
                   })
-                  .then(() => 'Removed song')
                   .catch(err => console.warn('songRefErr', err))
               }
             })
@@ -148,7 +160,7 @@ function changeSelected(person) {
 
 function setSelected(person, songsId) {
   let classes = []
-
+  console.log(person, songsId)
   person.classList.forEach(cssClass => {
 
     classes.push(cssClass)

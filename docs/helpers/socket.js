@@ -29,7 +29,13 @@ const initSocketIO = (server, newSession) => {
       await getUsers(socket.handshake.session.playlist, socket.handshake.session.searchKey)
     )
 
+    socket.on('add songs', () => {
+      console.log('server - add songs')
+      io
+      .to(makeUrlSafe(socket.handshake.session.socketRoom))
+      .emit('animate songs', 'test')
 
+    })
 
     socket.on('disconnect', async () => {
       console.log('disconnected', socket.handshake.session.socketRoom, user)
