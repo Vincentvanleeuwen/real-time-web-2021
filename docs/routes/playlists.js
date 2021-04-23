@@ -1,7 +1,4 @@
-// const firebase = require('firebase/app')
-// require('firebase/database')
 const { firebase } = require('../helpers/firebase')
-
 const router = require('express').Router()
 const request = require('request')
 const { deleteColumns, restructureSongs } = require('../helpers/transformData')
@@ -59,7 +56,7 @@ globalRef.on('value', function (snap) {
                 .then(() => console.log('Set songs'))
                 .catch(err => console.warn('SetSongError',err));
             }
-          }).catch(err => console.warn('songError',err));
+          }).catch(err => console.warn('songError', err));
 
           // Render the playlist
           res.render('playlist', {
@@ -71,7 +68,12 @@ globalRef.on('value', function (snap) {
             playlistTitleUrlSafe: makeUrlSafe(playlist),
             playlistUrl: snap.val().url,
             searchKey: snap.val().searchKey,
-            users: snap.val().activeUsers ? Object.values(snap.val().activeUsers) : null,
+            users: snap.val().activeUsers ? Object.values(snap.val().activeUsers) :
+              [{
+                id: req.session.user.id,
+                image: req.session.user.image,
+                name: req.session.user.name
+              }],
             isHost: snap.val().host,
             songs: restructureSongs(filtered)
           });
@@ -93,6 +95,8 @@ globalRef.on('value', function (snap) {
         shuffleArray(songs)
 
         const uris = songs.map(song => song.uri).join(',')
+
+        // Empty playlist before pushing new songs in
         const deleteUris = songs.map(song => ({
           uri: song.uri
         }))
@@ -125,10 +129,12 @@ globalRef.on('value', function (snap) {
             json: true
           }
 
-          // use the access token to access the Spotify Web API
+          // Push songs into the playlist
           request.post(options, (error, response, body) => {
             if(!body.error) {
               return res.redirect(`/playlists/${makeUrlSafe(playlist)}/${playlists[playlist].searchKey}`)
+            } else {
+              console.log('error posting songs')
             }
           })
         })

@@ -1,6 +1,8 @@
 // const socket = io('localhost:3000')
 const socket = io('combinify.herokuapp.com')
 const peopleEl = document.querySelector('.people')
+const createPlaylistBtn = document.querySelector('#playlist-form input[type="submit"]')
+const joinPlaylistBtn = document.querySelector('.home-options input[type="submit"]')
 
 socket.on('connect', () => {
   console.log('connected')
@@ -10,6 +12,18 @@ socket.on('update users', (playlist, socketRoom) => {
   console.log('socket room =', socketRoom)
   updateUsers(playlist)
 })
+if (createPlaylistBtn) {
+  createPlaylistBtn.addEventListener('click', () => {
+    socket.emit('room joined')
+  })
+}
+if (joinPlaylistBtn) {
+  joinPlaylistBtn.addEventListener('click', () => {
+    socket.emit('room joined')
+    console.log('room joined client side')
+  })
+}
+
 
 const updateUsers = (playlist) => {
   peopleEl.innerHTML = ''
@@ -39,5 +53,5 @@ const updateUsers = (playlist) => {
 
     peopleEl.appendChild(personEl)
   })
-
 }
+

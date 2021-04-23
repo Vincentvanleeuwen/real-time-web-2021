@@ -34,13 +34,13 @@ const combineUser = (playlist, searchKey, socketId, user) => {
         }
       }
     })
-    .catch((err) => console.log(err))
+    .catch((err) => console.log('error getting playlist', err))
 
 
   return { ...user, socketId }
 }
 
-const getUsers = (playlist, searchKey) => {
+const getUsers = async (playlist, searchKey) => {
 
   playlistRef
     .child(`${playlist}`)
@@ -55,7 +55,7 @@ const getUsers = (playlist, searchKey) => {
     .then((snap) => console.log('Got all users'))
     .catch((err) => console.warn('error getting users', err))
 
-  return allUsers
+  return await allUsers
 }
 
 const deleteUser = (playlist, searchKey, id) => {
@@ -85,7 +85,7 @@ const deleteUser = (playlist, searchKey, id) => {
                 .then(() => console.log('removed user'))
                 .catch(err => console.log('error removing item', err))
 
-              // Delete user addition
+              // Delete user song addition
               console.log(id)
               playlistRef
                 .child(`${playlist}`)
@@ -96,10 +96,10 @@ const deleteUser = (playlist, searchKey, id) => {
                 .catch(err => console.log('error removing item', err))
             }
           })
-        }).catch(err => console.warn(err))
+        }).catch(err => console.warn('error getting Active Users', err))
       }
     })
-    .catch((err) => console.log(err))
+    .catch((err) => console.log('error getting playlist', err))
 }
 
 

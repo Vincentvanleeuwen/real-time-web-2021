@@ -33,11 +33,17 @@ if(playlist) {
     person.addEventListener('click', (e) => {
       const personId = person.classList[[person.classList.length - 1]]
       const songsRef = playlistRef.child(`/songs/`)
+
+      // Check if person is already selected. Return if true
+      if(person.classList.contains('selected')) return
+
+      // Empty the songs
       songListEl.innerHTML = ''
       const containerOfSongs = document.createElement('section')
       containerOfSongs.classList.add(`songs`)
       containerOfSongs.classList.add(`${personId}`)
 
+      // Get songs from selected person
       playlistRef
       .get().then(snap => {
         if(snap.val().searchKey === afterHashtag) {
@@ -47,6 +53,7 @@ if(playlist) {
               if (key === personId) {
                 console.log()
                 snap.val()[`${key}`].forEach(song => {
+                  // Create song elements
                   const artistContainer = document.createElement('section')
                   const songEl = document.createElement('div')
                   const artistEl =  document.createElement('p')
@@ -67,8 +74,10 @@ if(playlist) {
 
       }).catch(err => console.warn('playlistRefErr', err))
 
+      // Add songs to songlist
       songListEl.appendChild(containerOfSongs)
 
+      // Change selected person
       changeSelected(person, personId)
     })
   })
@@ -118,7 +127,7 @@ if(playlist) {
 
 }
 
-function changeSelected(person, songsId) {
+function changeSelected(person) {
   let classes = []
 
   person.classList.forEach(cssClass => {
@@ -128,8 +137,6 @@ function changeSelected(person, songsId) {
     selected.classList.remove('selected')
 
     classes.push(cssClass)
-
-
 
     classes.unshift('selected')
     classes.forEach(separateClass => {
@@ -149,7 +156,7 @@ function setSelected(person, songsId) {
     if (cssClass === songsId) {
       person.removeAttribute('class')
       person.classList.add('selected')
-      console.log(classes)
+
       classes.forEach(separateClass => {
         person.classList.add(separateClass)
       })
