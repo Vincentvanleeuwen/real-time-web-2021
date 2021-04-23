@@ -6,13 +6,18 @@ nav {
   margin-top: 20%;
 }
 
-.btn {
+#login .btn {
   background-color: var(--spotify-color);
   color: var(--light-color);
-  margin-top: 10%;
+
+  text-align: center;
+  width: clamp(23rem, 5vw, 25rem);
+  margin: 5em 1em;
+  font-size: clamp(1.5rem, 3vw, 3rem);
 }
 
 #login {
   display: flex;
   justify-content: center;
+  align-items: center;
 }

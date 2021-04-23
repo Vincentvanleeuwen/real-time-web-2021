@@ -19,7 +19,7 @@ const songListEl = document.querySelector('.song-lists')
 
 const personEl = document.querySelectorAll('.person')
 
-if(playlist) {
+if(playlist && personEl) {
   const afterHashtag = /#([\w\d]+)/.exec(playlist.innerHTML)[1]
   const beforeHashtag = /([\w\d\s]+)#/.exec(playlist.innerHTML)[1]
   const currentUser = songContainer.classList[1]
@@ -32,6 +32,8 @@ if(playlist) {
     setSelected(person, currentUser)
 
     person.addEventListener('click', (e) => {
+
+      // Get Id of clicked user
       const personId = person.classList[[person.classList.length - 1]]
       const songsRef = playlistRef.child(`/songs/`)
 
@@ -81,17 +83,20 @@ if(playlist) {
                   containerOfSongs.appendChild(artistContainer)
                 })
               }
+              // Add songs to songlist
+              songListEl.appendChild(containerOfSongs)
+
+              // Change selected person
+              changeSelected(person, personId)
             })
-          })
+          }).catch(err => console.warn('SongErr', err))
         }
 
       }).catch(err => console.warn('playlistRefErr', err))
 
-      // Add songs to songlist
-      songListEl.appendChild(containerOfSongs)
 
-      // Change selected person
-      changeSelected(person, personId)
+
+
     })
   })
 

@@ -76,13 +76,10 @@ label[for="playlist-name-text"] #playlist-name-text {
   margin: 0.1em 0;
 }
 [class^="songs"] section div p:first-of-type {
-  font-family: Raleway, sans-serif;
-  font-weight: 700;
+  font-family: Raleway-bold, sans-serif;
 }
 [class^="songs"] section div p:last-of-type{
-  font-family: Raleway, sans-serif;
-  font-weight: 300;
-  font-style: italic;
+  font-family: Raleway-italic, sans-serif;
 }
 [class^="songs"] section svg {
   fill: var(--primary-color);

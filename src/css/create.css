@@ -17,20 +17,20 @@
 }
 
 #playlist-form input[type="text"]:focus {
-  outline: 0;
-  border-bottom: solid 1px var(--primary-color);;
+  outline:  solid 1px var(--primary-color);
+
 }
 #playlist-form input[type="text"] {
+  margin-top: 1em;
   border: 0;
-  background-color: transparent;
-  border-bottom: solid var(--light-color) 1px;
-  color: var(--light-color);
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  border-radius: 5px;
   padding: .5em;
 }
 #playlist-form input[type="text"]:last-child {
   border: 0;
-  background-color: transparent;
-  border-bottom: solid var(--light-color) 1px;
+  background-color: var(--light-color);
 }
 #duration {
   width: 20%;
@@ -41,7 +41,7 @@
   max-height: max-content;
   background-color: transparent;
   color: var(--light-color);
-  margin-top: 2em;
+  margin: 2em 0;
   border: 0;
   border-radius: 1em;
   padding: .5em 1em;
@@ -52,6 +52,9 @@
   color: var(--light-color);
   transition: .5s cubic-bezier(0.57, 0.54, 0, 0.7);
   border-radius:5px;
+}
+#playlist-form .timespan label {
+  margin-top: .5em;
 }
 #playlist-form fieldset input:checked:first-of-type + label {
   margin-left: 0;
@@ -64,9 +67,9 @@
 #playlist-form fieldset input:checked + label {
   background-color: var(--cta-color);
   color: var(--light-color);
-  line-height: 0;
+
   font-weight: bold;
-  margin: 0;
+
   padding: 1em;
   border-radius: 5px;
 }
