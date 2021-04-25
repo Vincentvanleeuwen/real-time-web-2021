@@ -35,7 +35,6 @@ router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
 
     // Filter the data
     let filtered = deleteColumns(body)
-
     const songsRef = firebase.database().ref(`playlists/${playlist.name}/songs/${req.session.user.id}`)
 
     // Add the songs to firebase

@@ -31,6 +31,7 @@ const initSocketIO = (server, newSession) => {
 
     socket.on('add songs', () => {
       console.log('server - add songs')
+      console.log('to socketroom: ', makeUrlSafe(socket.handshake.session.socketRoom))
       io
       .to(makeUrlSafe(socket.handshake.session.socketRoom))
       .emit('animate songs', 'test')

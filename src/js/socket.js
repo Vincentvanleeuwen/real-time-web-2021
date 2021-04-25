@@ -1,7 +1,7 @@
 const socket = io()
 
 const peopleEl = document.querySelector('.people')
-const songsEl = document.querySelector('.songs')
+const songsEl = document.querySelectorAll('.songs section')
 const saveBtn = document.getElementById('save-button')
 
 window.addEventListener('load', () => {
@@ -16,12 +16,16 @@ window.addEventListener('load', () => {
       updateUsers(playlist)
     })
 
+    if(saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        console.log('clicked!')
+        socket.emit('add songs')
+      })
+    }
 
-    saveBtn.addEventListener('click', () => {
-      console.log('clicked!')
-      socket.emit('add songs')
-    })
 
+
+    // Not fired because page reloaded before execution?
     socket.on('animate songs', test => {
       console.log('Animation fired', test)
       animateSongs()

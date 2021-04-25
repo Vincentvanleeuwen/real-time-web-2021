@@ -122,6 +122,7 @@ label[for="playlist-name-text"] #playlist-name-text {
   width: 100%;
   min-width: 7em;
   padding: 0 .5em;
+  cursor: pointer;
 }
 .people-music-container .people .person:not(.host) {
   padding: 1em 0;
@@ -136,8 +137,13 @@ label[for="playlist-name-text"] #playlist-name-text {
 }
 .people-music-container .people .person img{
   height: 5em;
-}
 
+}
+.people-music-container .people .person:last-of-type img {
+  transform: scale(0.9);
+  opacity: 0;
+  animation: show-up .6s cubic-bezier(.92,.13,.53,1.29) forwards;
+}
 .playlist-main {
   width: 100%;
 }
@@ -178,4 +184,19 @@ label[for="playlist-name-text"] #playlist-name-text {
     font-size: clamp(1rem,3vw,1.5rem);
   }
 
+}
+
+@keyframes show-up {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
