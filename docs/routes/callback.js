@@ -7,9 +7,6 @@ const stateKey = 'spotify_auth_state';
 // Spotify API callback
 router.get('/', function(req, res) {
 
-  // your application requests refresh and access tokens
-  // after checking the state parameter
-
   const code = req.query.code || null;
   const state = req.query.state || null;
   const storedState = req.cookies ? req.cookies[stateKey] : null;

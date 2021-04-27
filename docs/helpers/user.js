@@ -2,18 +2,26 @@ const { firebase } = require('./firebase')
 
 const playlistRef = firebase.database().ref('playlists/')
 
+/**
+ * Combines a Spotify user with a socket ID
+ * @playlist  {string} Playlist name
+ * @searchKey  {string} Playlist Key
+ * @socketId  {string} Socket ID
+ * @user {object} Object with Spotify ID, image and name
+ * @return {Promise}
+ */
 const combineUser = async (playlist, searchKey, socketId, user) => {
 
-  const combinedUser = await playlistRef
+  return await playlistRef
     .child(`${playlist}`)
     .orderByChild('searchKey')
     .get().then(snap => {
 
       let duplicate = false;
-      if(snap.val().searchKey === searchKey) {
+      if (snap.val().searchKey === searchKey) {
 
         // Check if user already exists
-        if(snap.val().activeUsers) {
+        if (snap.val().activeUsers) {
           Object.values(snap.val().activeUsers).forEach(activeUser => {
             if (activeUser.id === user.id) {
               duplicate = true
@@ -21,23 +29,26 @@ const combineUser = async (playlist, searchKey, socketId, user) => {
           })
         }
 
-        if(!duplicate) {
+        if (!duplicate) {
           // Create new active user
           playlistRef.child(`${playlist}`)
-            .child('activeUsers')
-            .push({ ...user, socketId })
-            .then(() => console.log('updated'))
-            .catch(err => console.warn('error updating', err))
+          .child('activeUsers')
+          .push({...user, socketId})
+          .then(() => console.log('updated'))
+          .catch(err => console.warn('error updating', err))
         }
-        return { ...user, socketId }
+        return {...user, socketId}
       }
-    })
-    .catch((err) => console.log('error getting playlist', err))
-
-
-  return combinedUser
+  })
+  .catch((err) => console.log('error getting playlist', err))
 }
 
+/**
+ * Combines a Spotify user with a socket ID
+ * @playlist  {string} Playlist name
+ * @searchKey  {string} Playlist Key
+ * @return {Promise}
+ */
 const getUsers = async (playlist, searchKey) => {
   return await playlistRef
   .child(`${playlist}`)
@@ -51,8 +62,15 @@ const getUsers = async (playlist, searchKey) => {
   .catch((err) => console.warn('error getting users', err))
 }
 
+/**
+ * Combines a Spotify user with a socket ID
+ * @playlist  {string} Playlist name
+ * @searchKey  {string} Playlist Key
+ * @id  {string} User ID to delete
+ * @return {Promise}
+ */
 const deleteUser = (playlist, searchKey, id) => {
-  console.log('test1')
+
   // Get playlist
   return playlistRef.child(`${playlist}`)
     .orderByChild('searchKey')
@@ -63,10 +81,10 @@ const deleteUser = (playlist, searchKey, id) => {
         return playlistRef.child(playlist)
         .child('activeUsers').get().then(snapshot => {
 
-          const people = Object.entries(snapshot.val())
-          .filter(([key, person]) => {
-            return person.id === id && snap.val().host !== id
-          })
+          const people =
+            Object.entries(snapshot.val()).filter(([key, person]) => {
+              return person.id === id && snap.val().host !== id
+            })
 
           if(!people.length) return
 

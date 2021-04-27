@@ -5,7 +5,12 @@ const dataAttributes = [
   'items'
 ]
 
-// Delete unnecessary columns
+
+/**
+ * Delete unnecessary columns
+ * @data  {object} Spotify user data
+ * @return {object} Filtered data
+ */
 const deleteColumns = (data) => {
 
   return Object.entries(data).map(entry => {
@@ -20,6 +25,12 @@ const deleteColumns = (data) => {
   })
   .filter(entry => entry !== undefined)
 }
+
+/**
+ * Change spotify data structure.
+ * @data  {object} Spotify user data
+ * @return {object} Restructured data
+ */
 const restructureData = (data) => {
 
   let spotifyId = data[1][1],
@@ -50,7 +61,12 @@ const restructureData = (data) => {
     return acc;
   }, []);
 }
-// Change song object structure.
+//
+/**
+ * Change song object structure.
+ * @data  {object} Unorganized object of Songs
+ * @return {object} Organized Object of Songs
+ */
 const restructureSongs = (data) => {
   let songs = []
   if(data.length < 1) {
@@ -60,6 +76,11 @@ const restructureSongs = (data) => {
   return songs
 }
 
+/**
+ * Change song object structure.
+ * @song  {object} Individual Song Object
+ * @return {object} Restructured Song Object
+ */
 const songObject = (song) => {
   return {
     songName: song.name,

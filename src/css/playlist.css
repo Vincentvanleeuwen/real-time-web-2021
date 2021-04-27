@@ -150,7 +150,7 @@ label[for="playlist-name-text"] #playlist-name-text {
   width: 100%;
 }
 
-.host-tag {
+.host-tag, .filler {
 
   background-image: url('../img/crown.png');
   transform: rotate(28deg) translate(28px,-10px);
@@ -158,6 +158,9 @@ label[for="playlist-name-text"] #playlist-name-text {
   width: 2.5em;
   background-size: contain;
   background-repeat: no-repeat;
+}
+.filler {
+  background-image: none;
 }
 
 .animateSong {

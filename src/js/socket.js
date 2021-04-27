@@ -1,62 +1,50 @@
 const socket = io()
 
-
-
-
 window.addEventListener('load', () => {
   if (window.location.pathname.startsWith('/playlists')) {
 
     const peopleEl = document.querySelector('.people')
-    const songsEl = document.querySelectorAll('.songs section')
-    const saveBtn = document.getElementById('save-button')
     const playlist = document.querySelector('.playlist-name')
     const songContainer = document.querySelector('.songs')
     const songListEl = document.querySelector('.song-lists')
+    const copyButton = document.getElementById('copy-button')
+
     const afterHashtag = /#([\w\d]+)/.exec(playlist.innerHTML)[1]
     const beforeHashtag = /([\w\d\s]+)#/.exec(playlist.innerHTML)[1]
+    const currentUser = songContainer.classList[1]
+    const spotifyUrl = playlist.getAttribute("data-spotify-link")
+
     const playlistRef = firebase.database().ref(`playlists/${beforeHashtag}`)
     const songsRef = playlistRef.child(`/songs/`)
-    const currentUser = songContainer.classList[1]
-    const spotifyUrl = playlist.getAttribute("data-spotify-link");
-    socket.on('connect', () => {
-      // setListeners()
-      console.log('connected')
 
-    })
-
+    // Fire on serverside event "update users"
     socket.on('update users', playlist => {
-      // Updating user.
+      // Update the user list
       updateUsers(playlist)
+
+      // Set click event listener per person
       setListeners()
-      // setSelected(currentUser)
+
     })
 
-    // if(saveBtn) {
-    //   saveBtn.addEventListener('click', () => {
-    //     console.log('clicked!')
-    //     socket.emit('add songs')
-    //   })
-    // }
-
-
-
-    // Not fired because page reloaded before execution?
+    // Fire on serverside event "animate songs"
     socket.on('animate songs', async () => {
       console.log('Animation fired')
       animateSongs()
-      addSpotifyBtn()
-
+      if(!copyButton) {
+        addSpotifyBtn()
+      }
     })
 
+    // Set the songs on first load
     if(songContainer.length !== 0) {
-      console.log(songContainer)
+
       if (!songContainer.childNodes[1].classList) return
 
       let isAnimating = songContainer.childNodes[1].classList.contains('animateSong')
 
-      console.log('b4 isAnimating.', isAnimating)
       if (isAnimating) {
-        console.log('in isAnimating.')
+        // Send to server
         socket.emit('add songs')
       }
 
@@ -64,11 +52,15 @@ window.addEventListener('load', () => {
       songContainer.innerHTML = ''
 
       // Set the songs
-      setNewSongs(currentUser, songContainer, isAnimating).then(()=> console.log('set songs')).catch(err => console.log(err))
+      setNewSongs(currentUser, songContainer, isAnimating)
+        .then(()=> console.log('set songs'))
+        .catch(err => console.log(err))
     }
 
-
-
+    /**
+     * Updates the user list
+     * @playlist  {object} The Firebase Playlist Object
+     */
     function updateUsers (playlist) {
 
       peopleEl.innerHTML = ''
@@ -101,6 +93,9 @@ window.addEventListener('load', () => {
       })
     }
 
+    /**
+     * Set event listener per person.
+     */
     function setListeners()  {
 
       const personElements = document.querySelectorAll('.person')
@@ -123,20 +118,24 @@ window.addEventListener('load', () => {
       })
     }
 
-
+    /**
+     * Animate the songs for everyone in the socket room
+     */
     function animateSongs() {
-      console.log('In animation!')
+
       const songs = document.querySelectorAll('.songs section')
       songs.forEach((song, i) => {
-        console.log(song)
-        console.log(i * 200)
-        setTimeout(()=> {
+        // setTimeout(()=> {
           song.classList.add('animateSong')
-          song.style.marginTop = `-${i * 2}em`
-        }, i * 200)
+          // song.style.marginTop = `-${i * 2}em`
+        // }, i * 200)
       })
     }
 
+
+    /**
+     * Add spotify button after animation.
+     */
     function addSpotifyBtn() {
       console.log('In Btn!')
       const songListElement = document.querySelector('.song-lists')
@@ -170,8 +169,7 @@ window.addEventListener('load', () => {
      * @containerOfSongs  {node} The container of current songs
      * @isAnimating  {boolean} **Optional** Adds animateSong class to section
      * @return {Promise}
-     */
-
+    */
     async function setNewSongs(personId, containerOfSongs, isAnimating) {
 
       return await playlistRef
@@ -229,6 +227,10 @@ window.addEventListener('load', () => {
       }).catch(err => console.warn('playlistRefErr', err))
     }
 
+    /**
+     * Set the event listeners of the delete song buttons
+     * @return {Promise}
+     */
     async function setDeleteButtons() {
 
       const deleteBtn = document.querySelectorAll('.delete')
@@ -274,6 +276,7 @@ window.addEventListener('load', () => {
       }).catch(err => console.warn(err))
     }
 
+    // Change selection field
     function setSelected(personId) {
 
       const allPeople = document.querySelectorAll('.person')
