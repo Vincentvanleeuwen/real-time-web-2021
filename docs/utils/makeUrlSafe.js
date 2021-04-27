@@ -1,6 +1,6 @@
 /**
  * Changes a string from "String like this" to "string-like-this"
- * @param  {name} the string
+ * @name  {string} the playlist name + hashtag code
  * @return {string} the changed string
  */
 

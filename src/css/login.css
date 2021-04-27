@@ -11,7 +11,6 @@ nav {
   color: var(--light-color);
 
   text-align: center;
-  width: clamp(23rem, 5vw, 25rem);
   margin: 5em 1em;
   font-size: clamp(1.5rem, 3vw, 3rem);
 }

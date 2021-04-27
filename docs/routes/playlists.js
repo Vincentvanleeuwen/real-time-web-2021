@@ -14,6 +14,9 @@ router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
     return
   }
 
+  let animationState = req.session.animateState
+  req.session.animateState = false
+
   const playlist = req.playlist
 
   req.session.host = playlist.host
@@ -59,7 +62,8 @@ router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
         users: playlist.activeUsers ? Object.values(playlist.activeUsers) : [],
         isHost: playlist.host === req.session.user.id,
         host: playlist.host,
-        songs: restructureSongs(filtered)
+        songs: restructureSongs(filtered),
+        animateState: animationState
       });
     })
 
@@ -120,6 +124,8 @@ router.post('/:playlistName/:searchKey', getPlaylist, (req, res) => {
       // Push songs into the playlist
       request.post(options, (error, response, body) => {
         if(!body.error) {
+          req.session.animateState = true
+          req.session.save()
           return res.redirect(`/playlists/${makeUrlSafe(playlist.name)}/${playlist.searchKey}`)
         } else {
           console.log('error posting songs')
@@ -130,6 +136,7 @@ router.post('/:playlistName/:searchKey', getPlaylist, (req, res) => {
 
 })
 
+// Middleware for getting the playlist name
 function getPlaylist(req, res, next) {
 
   const { playlistName, searchKey } = req.params

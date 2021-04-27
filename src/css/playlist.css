@@ -22,6 +22,7 @@
   color: var(--light-color);
   background-color: #FF7A7A;
   padding: 0 1em;
+  min-height: 4em;
 }
 .playlist-name {
   appearance: none;
@@ -150,9 +151,7 @@ label[for="playlist-name-text"] #playlist-name-text {
 }
 
 .host-tag {
-  /*position: absolute;*/
-  /*top: -10%;*/
-  /*right: 38%;*/
+
   background-image: url('../img/crown.png');
   transform: rotate(28deg) translate(28px,-10px);
   height: 1.2em;
@@ -161,6 +160,18 @@ label[for="playlist-name-text"] #playlist-name-text {
   background-repeat: no-repeat;
 }
 
+.animateSong {
+  opacity: 1;
+  animation: move-up 1s ease forwards
+}
+@keyframes move-up {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 
 @media screen and (min-width: 48em) {
   .people-music-container {

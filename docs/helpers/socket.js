@@ -34,7 +34,7 @@ const initSocketIO = (server, newSession) => {
       console.log('to socketroom: ', makeUrlSafe(socket.handshake.session.socketRoom))
       io
       .to(makeUrlSafe(socket.handshake.session.socketRoom))
-      .emit('animate songs', 'test')
+      .emit('animate songs')
 
     })
 

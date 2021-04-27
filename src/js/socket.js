@@ -17,9 +17,9 @@ window.addEventListener('load', () => {
     const playlistRef = firebase.database().ref(`playlists/${beforeHashtag}`)
     const songsRef = playlistRef.child(`/songs/`)
     const currentUser = songContainer.classList[1]
-
+    const spotifyUrl = playlist.getAttribute("data-spotify-link");
     socket.on('connect', () => {
-      setListeners()
+      // setListeners()
       console.log('connected')
 
     })
@@ -31,25 +31,40 @@ window.addEventListener('load', () => {
       // setSelected(currentUser)
     })
 
-    if(saveBtn) {
-      saveBtn.addEventListener('click', () => {
-        console.log('clicked!')
-        socket.emit('add songs')
-      })
-    }
+    // if(saveBtn) {
+    //   saveBtn.addEventListener('click', () => {
+    //     console.log('clicked!')
+    //     socket.emit('add songs')
+    //   })
+    // }
 
 
 
     // Not fired because page reloaded before execution?
-    socket.on('animate songs', async test => {
-      console.log('Animation fired', test)
-      return await animateSongs()
+    socket.on('animate songs', async () => {
+      console.log('Animation fired')
+      animateSongs()
+      addSpotifyBtn()
 
     })
 
     if(songContainer.length !== 0) {
       console.log(songContainer)
-      setNewSongs(currentUser, songContainer).then(()=> console.log('nice')).catch(err => console.log(err))
+      if (!songContainer.childNodes[1].classList) return
+
+      let isAnimating = songContainer.childNodes[1].classList.contains('animateSong')
+
+      console.log('b4 isAnimating.', isAnimating)
+      if (isAnimating) {
+        console.log('in isAnimating.')
+        socket.emit('add songs')
+      }
+
+      // Empty container to prevent duplicates
+      songContainer.innerHTML = ''
+
+      // Set the songs
+      setNewSongs(currentUser, songContainer, isAnimating).then(()=> console.log('set songs')).catch(err => console.log(err))
     }
 
 
@@ -109,16 +124,55 @@ window.addEventListener('load', () => {
     }
 
 
-    async function animateSongs () {
+    function animateSongs() {
       console.log('In animation!')
-      songsEl.forEach(song => {
+      const songs = document.querySelectorAll('.songs section')
+      songs.forEach((song, i) => {
         console.log(song)
+        console.log(i * 200)
+        setTimeout(()=> {
+          song.classList.add('animateSong')
+          song.style.marginTop = `-${i * 2}em`
+        }, i * 200)
       })
     }
 
+    function addSpotifyBtn() {
+      console.log('In Btn!')
+      const songListElement = document.querySelector('.song-lists')
+      const btn = document.createElement('button')
+      const btnNode = document.createTextNode('Spotify Link')
+      const label = document.createElement('label')
+      const textArea = document.createElement('textarea')
+      const textNode = document.createTextNode(spotifyUrl)
+
+      console.log('spotifyurl=', spotifyUrl)
+      textArea.id = 'copy-text'
+
+      textArea.appendChild(textNode)
+
+      label.for = 'copy-text'
+      label.appendChild(textArea)
+
+      btn.id = 'copy-button'
+      btn.classList.add('btn')
+      btn.appendChild(btnNode)
 
 
-    async function setNewSongs(personId, containerOfSongs) {
+      songListElement.appendChild(label)
+      songListElement.appendChild(btn)
+    }
+
+
+    /**
+     * Sets all songs
+     * @personId  {string} Spotify ID
+     * @containerOfSongs  {node} The container of current songs
+     * @isAnimating  {boolean} **Optional** Adds animateSong class to section
+     * @return {Promise}
+     */
+
+    async function setNewSongs(personId, containerOfSongs, isAnimating) {
 
       return await playlistRef
       .get().then(snap => {
@@ -131,6 +185,9 @@ window.addEventListener('load', () => {
 
                   // Create song elements
                   const artistContainer = document.createElement('section')
+                  if(isAnimating) {
+                    artistContainer.classList.add('animateSong')
+                  }
                   const songEl = document.createElement('div')
                   const artistEl =  document.createElement('p')
                   const nameEl = document.createElement('p')

@@ -4,9 +4,10 @@ const playlistTxt = document.getElementById('playlist-name-text')
 const playlistCode = document.querySelector('.playlist-name')
 
 
-if(copyBtn && copyTxt) {
+if(playlistCode && playlistTxt) {
   const createCopyElement = (button, textEl, type) => {
     button.addEventListener('click', () => {
+      console.log('clicked')
       let resetText = button.innerHTML
       textEl.focus()
       textEl.select()
@@ -27,7 +28,9 @@ if(copyBtn && copyTxt) {
     })
   }
 
-  createCopyElement(copyBtn, copyTxt, 'URL')
+  if(copyBtn && copyTxt) {
+    createCopyElement(copyBtn, copyTxt, 'URL')
+  }
   createCopyElement(playlistCode, playlistTxt, 'Code')
 }
 
