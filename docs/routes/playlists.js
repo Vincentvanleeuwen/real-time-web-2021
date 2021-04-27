@@ -44,7 +44,9 @@ router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
         return songsRef
         .set(restructureSongs(filtered))
       }
-    }).catch(err => console.warn('songError', err)).then(() => {
+    })
+    .catch(err => console.warn('songError', err))
+    .then(() => {
       res.render('playlist', {
         layout: 'main',
         userId: req.session.user.id,

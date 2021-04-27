@@ -123,6 +123,7 @@ label[for="playlist-name-text"] #playlist-name-text {
   min-width: 7em;
   padding: 0 .5em;
   cursor: pointer;
+  position: relative;
 }
 .people-music-container .people .person:not(.host) {
   padding: 1em 0;
@@ -149,6 +150,9 @@ label[for="playlist-name-text"] #playlist-name-text {
 }
 
 .host-tag {
+  /*position: absolute;*/
+  /*top: -10%;*/
+  /*right: 38%;*/
   background-image: url('../img/crown.png');
   transform: rotate(28deg) translate(28px,-10px);
   height: 1.2em;
@@ -165,6 +169,7 @@ label[for="playlist-name-text"] #playlist-name-text {
   .people{
     flex-direction: row;
     justify-content:center;
+    align-items: stretch;
   }
   .people-music-container .people .person {
     max-width: 12em;
