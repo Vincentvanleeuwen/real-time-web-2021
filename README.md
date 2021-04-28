@@ -118,7 +118,7 @@ Check out the [Reference](https://developer.spotify.com/documentation/web-api/re
 
 ## Data life cycle
 
-![Data Life Cycle](https://github.com/Vincentvanleeuwen/real-time-web-2021/blob/main/images/Web%201920%20%E2%80%93%202.jpg)
+![Data Life Cycle](https://github.com/Vincentvanleeuwen/real-time-web-2021/blob/main/images/datalifecycle.jpg)
 
 ## Checklist
 - [x] Connect to the spotify API
