@@ -100,18 +100,38 @@ or Temporary user authorization
 
 Because I'm using node js now, I will be using the authorization code flow from spotify.
 ```jsx
-const options = {
-  headers: {
-    'Authorization': 'Bearer ' + _token,
-    'Content-Type': 'application/x-www-form-urlencoded'
-  },
-  json: true
-}
-  fetch('https://api.spotify.com/v1/me/top/tracks', options).then(response => {
-    return response.json()
-  }).then(data => {
-    console.log('data', data); // Returns an object with 20 tracks in it
-  })
+
+   const authOptions = {
+      url: 'https://accounts.spotify.com/api/token',
+      form: {
+        code: code,
+        redirect_uri: process.env.REDIRECT_URI,
+        grant_type: 'authorization_code'
+      },
+      headers: {
+        'Authorization': 'Basic ' + (Buffer.from(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET).toString('base64')),
+        'Content-Type': 'application/x-www-urlencoded'
+      },
+      json: true
+    };
+
+    request.post(authOptions, function(error, response, body) {
+
+      if (error || response.statusCode !== 200) {
+        res.redirect('/#' +
+          querystring.stringify({
+            error: 'invalid_token'
+          })
+        );
+        return
+      }
+
+      req.session.access_token = body.access_token
+      req.session.refresh_token = body.refresh_token
+      req.session.save();
+
+      res.redirect('/home' );
+    });
 ```
 
 Check out the [Reference](https://developer.spotify.com/documentation/web-api/reference/) page for further explanation on what links to get what data from.
