@@ -5,8 +5,10 @@ const { makeUrlSafe} = require('../utils/makeUrlSafe')
 const initSocketIO = (server, newSession) => {
   const io = require('socket.io')(server)
 
+  // Use Sessions in socket io
   io.use(sharedSessions(newSession))
 
+  // Create a connection
   io.on('connection', async (socket) => {
 
     if(!socket.handshake.session.user || !socket.handshake.session.playlist ||
@@ -20,28 +22,33 @@ const initSocketIO = (server, newSession) => {
       socket.handshake.session.user
     )
 
-    console.log('session= ', socket.handshake.session)
+    // Join the correct socketRoom
     socket.join(makeUrlSafe(socket.handshake.session.socketRoom))
 
+    // Update the users visually
     io
     .to(makeUrlSafe(socket.handshake.session.socketRoom))
     .emit('update users',
       await getUsers(socket.handshake.session.playlist, socket.handshake.session.searchKey)
     )
 
+    // When add songs button is fired
     socket.on('add songs', () => {
-      console.log('server - add songs')
-      console.log('to socketroom: ', makeUrlSafe(socket.handshake.session.socketRoom))
+
+      // Update songs to animate
       io
       .to(makeUrlSafe(socket.handshake.session.socketRoom))
       .emit('animate songs')
 
     })
 
+    // On disconnect
     socket.on('disconnect', async () => {
-      console.log('disconnected', socket.handshake.session.socketRoom, user)
+
+      // Delete user from firebase
       await deleteUser(socket.handshake.session.playlist, socket.handshake.session.searchKey, user.id)
 
+      // Update the users visually
       io
         .to(makeUrlSafe(socket.handshake.session.socketRoom))
         .emit('update users',
@@ -50,6 +57,7 @@ const initSocketIO = (server, newSession) => {
             socket.handshake.session.searchKey
           )
         )
+      // Reset the socketRoom
       socket.handshake.session.socketRoom = null
       socket.handshake.session.save();
     })

@@ -13,7 +13,7 @@ if(process.env.NODE_ENV !== 'production'){
 const port = process.env.PORT || 3000
 const app = express();
 const server = http.createServer(app)
-const { initSocketIO } = require('./docs/helpers/socket')
+const { initSocketIO } = require('./server/helpers/socket')
 
 // Create a session
 const newSession = session({
@@ -26,21 +26,21 @@ const newSession = session({
 })
 
 // Require the routes
-const home = require('./docs/routes/home')
-const login = require('./docs/routes/login')
-const callback = require('./docs/routes/callback')
-const create = require('./docs/routes/create')
-const playlists = require('./docs/routes/playlists')
-const error = require('./docs/routes/error')
-const offline = require('./docs/routes/offline')
+const home = require('./server/routes/home')
+const login = require('./server/routes/login')
+const callback = require('./server/routes/callback')
+const create = require('./server/routes/create')
+const playlists = require('./server/routes/playlists')
+const error = require('./server/routes/error')
+const offline = require('./server/routes/offline')
 
 // Assign handlebars as the view engine
 app.set('view engine', 'hbs');
-app.set('views', __dirname + '/docs/views')
+app.set('views', __dirname + '/server/views')
 app.engine('hbs', handlebars({
   extname: 'hbs',
   defaultLayout: 'main',
-  helpers: require('./docs/config/handlebarsHelpers')
+  helpers: require('./server/config/handlebarsHelpers')
 }))
 app.set('trust proxy', 1)
 app.use(express.static(__dirname + '/public'))
