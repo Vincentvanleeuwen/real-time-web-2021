@@ -1,9 +1,9 @@
 # **Combinify**
-### Progressive Web Apps @cmda-minor-web 2020 - 2021
+### Real-time-web @cmda-minor-web 2020 - 2021
 
 ## CONCEPT
 
-https://combinify-node.herokuapp.com
+https://combinify.herokuapp.com
 
 Combinify is a playlist creating application that lets you create a combined playlist of multiple people their top songs.
 This application will be made without the use of Javascript Frameworks.
