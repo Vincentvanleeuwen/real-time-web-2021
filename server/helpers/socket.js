@@ -8,7 +8,6 @@ const initSocketIO = (server, newSession) => {
   // Use Sessions in socket io
   io.use(sharedSessions(newSession))
 
-  // Create a connection
   io.on('connection', async (socket) => {
 
     if(!socket.handshake.session.user || !socket.handshake.session.playlist ||
@@ -42,7 +41,6 @@ const initSocketIO = (server, newSession) => {
 
     })
 
-    // On disconnect
     socket.on('disconnect', async () => {
 
       // Delete user from firebase

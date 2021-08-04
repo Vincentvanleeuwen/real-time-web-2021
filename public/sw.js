@@ -6,9 +6,9 @@ const CACHE_URLS = [
   '/offline'
 ]
 const DENY_URL = ['/home', '/login', '/']
+
 // Install the service worker
 self.addEventListener('install', event => {
-
   event.waitUntil(
     caches.open(CACHE_NAME)
     .then((cache) =>{
