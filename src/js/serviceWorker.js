@@ -20,25 +20,25 @@
 //   divInstall.classList.toggle('hidden', true);
 // });
 //
-// // If service worker is supported
-// if ('serviceWorker' in navigator) {
-//
-//   // Make sure page is loaded
-//   window.addEventListener('load', () => {
-//
-//     // Register the service worker
-//     navigator.serviceWorker
-//     .register('../sw.js')
-//     .then(reg => {
-//
-//       if(reg.installing) {
-//         console.log('Service worker installing')
-//       } else if(reg.waiting) {
-//         console.log('Service worker installed')
-//       } else if(reg.active) {
-//         console.log('Service worker active')
-//       }
-//
-//     }).catch(error => console.log('Registration failed with ' + error));
-//   })
-// }
+// If service worker is supported
+if ('serviceWorker' in navigator) {
+
+  // Make sure page is loaded
+  window.addEventListener('load', () => {
+
+    // Register the service worker
+    navigator.serviceWorker
+    .register('../sw.js')
+    .then(reg => {
+
+      if(reg.installing) {
+        console.log('Service worker installing')
+      } else if(reg.waiting) {
+        console.log('Service worker installed')
+      } else if(reg.active) {
+        console.log('Service worker active')
+      }
+
+    }).catch(error => console.log('Registration failed with ' + error));
+  })
+}
