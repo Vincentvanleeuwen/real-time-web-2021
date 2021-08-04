@@ -4,7 +4,6 @@ const request = require('request')
 const { deleteColumns, restructureSongs } = require('../helpers/transformData')
 const { makeUrlSafe, makeUrlUnsafe } = require('../utils/makeUrlSafe')
 const { shuffleArray } = require('../utils/shuffleArray')
-
 const globalRef = firebase.database().ref('playlists/')
 
 router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
@@ -42,7 +41,6 @@ router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
 
     // Add the songs to firebase
     songsRef.get().then((snapshot) => {
-
       if (!snapshot.val()) {
         return songsRef
         .set(restructureSongs(filtered))
@@ -66,9 +64,7 @@ router.get('/:playlistName/:searchKey', getPlaylist, (req, res) => {
         animateState: animationState
       });
     })
-
   });
-
 })
 
 router.post('/:playlistName/:searchKey', getPlaylist, (req, res) => {
@@ -143,7 +139,6 @@ function getPlaylist(req, res, next) {
   const unsafePlaylistName = makeUrlUnsafe(playlistName)
 
   globalRef.child(unsafePlaylistName).orderByChild('searchKey').get().then(snap => {
-
     if (!snap.val()) return res.status(404).redirect('/home')
     if(snap.val().searchKey !== searchKey) return res.status(404).redirect('/')
 

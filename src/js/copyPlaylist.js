@@ -3,7 +3,6 @@ const copyTxt = document.getElementById('copy-text')
 const playlistTxt = document.getElementById('playlist-name-text')
 const playlistCode = document.querySelector('.playlist-name')
 
-
 if(playlistCode && playlistTxt) {
   const createCopyElement = (button, textEl, type) => {
     button.addEventListener('click', () => {

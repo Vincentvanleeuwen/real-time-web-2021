@@ -5,7 +5,6 @@ const dataAttributes = [
   'items'
 ]
 
-
 /**
  * Delete unnecessary columns
  * @data  {object} Spotify user data
@@ -61,7 +60,7 @@ const restructureData = (data) => {
     return acc;
   }, []);
 }
-//
+
 /**
  * Change song object structure.
  * @data  {object} Unorganized object of Songs
