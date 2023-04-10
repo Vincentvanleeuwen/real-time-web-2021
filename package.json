@@ -12,6 +12,7 @@
     "start": "node app.js",
     "prebuild:css": "rimraf \"public/css\"",
     "prebuild:js": "rimraf \"public/js\"",
+    "build": "echo y | concurrently \"npm:build:js\" \"npm:build:css\"",
     "build:css": "node ./build_scripts/build-css.js",
     "build:js": "node ./build_scripts/build-js.js",
     "watch:js": "nodemon --watch ./src/js -e js ./build_scripts/build-js.js",
