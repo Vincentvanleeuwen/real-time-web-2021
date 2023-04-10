@@ -2,14 +2,14 @@ const fb = require('firebase/app')
 require('firebase/database')
 
 const firebaseConfig = {
-  apiKey: process.env.API_KEY,
-  authDomain: process.env.AUTH_DOMAIN,
-  databaseURL: process.env.DATABASE_URL,
-  projectId: process.env.PROJECT_ID,
-  storageBucket: process.env.STORAGE_BUCKET,
-  messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  appId: process.env.APP_ID,
-  measurementId: process.env.MEASUREMENT_ID
+  apiKey: "AIzaSyDnBaT31_LbWAjiRd7isQ1pPdiDVD1HmtQ",
+  authDomain: "combinify-b1222.firebaseapp.com",
+  databaseURL: "combinify-b1222-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "combinify-b1222",
+  storageBucket: "combinify-b1222.appspot.com",
+  messagingSenderId: "274350746286",
+  appId: "1:274350746286:web:ee843bfbd1f420cb235b3f",
+  measurementId: "G-1PDBZFE48J"
 };
 const firebase = !fb.apps.length ? fb.initializeApp(firebaseConfig) : fb.app()
 
