@@ -3,7 +3,7 @@
 
 ## CONCEPT
 
-https://combinify.herokuapp.com
+combinify-shoockz.b4a.run/
 
 Combinify is a playlist creating application that lets you create a combined playlist of multiple people their top songs.
 
